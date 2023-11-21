@@ -2,7 +2,11 @@ import { TbCircleDashed } from "react-icons/tb";
 import { BiCommentDetail } from "react-icons/bi";
 import { AiOutlineSearch } from "react-icons/ai";
 import { BsFilter } from "react-icons/bs";
+import ChatCard from "./ChatCard/ChatCard";
+import { useState } from "react";
 const HomePage = () => {
+  const [querys, setQuerys] = useState(null);
+  const handleSearch = () => {};
   return (
     <div className="relative">
       <div className=" w-full py-14 bg-[#39A7FF] "></div>
@@ -29,12 +33,30 @@ const HomePage = () => {
                 className="border-none outline-none bg-slate-200 rounded-md  w-[93%] pl-9 py-2"
                 type="text"
                 placeholder="Search or Start new Chat"
+                onChange={(e) => {
+                  setQuerys(e.target.value);
+                  handleSearch(e.target.value);
+                }}
+                value={querys}
               />
               <AiOutlineSearch className="left-5 top top-7 absolute" />
               <div>
                 <BsFilter className="ml-4 text-3xl" />
               </div>
             </div>
+            {/* {All user} */}
+            <div className="bg-white overflow-y-scroll h-[76.8vh] px-3">
+              {querys &&
+                [1, 1, 1, 1].map((item) => (
+                  <div>
+                    {" "}
+                    <hr />
+                    <ChatCard />{" "}
+                  </div>
+                ))}
+            </div>
+
+            {/* deafault whatsapp page */}
           </div>
         </div>
         <div className="right"></div>
