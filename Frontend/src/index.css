@@ -2,3 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 @tailwind variants;
+body{
+    max-width: 100vw;
+}
