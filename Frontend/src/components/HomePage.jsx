@@ -1,7 +1,7 @@
 import { TbCircleDashed } from "react-icons/tb";
 import { BiCommentDetail } from "react-icons/bi";
 import { AiOutlineSearch } from "react-icons/ai";
-import { BsFilter } from "react-icons/bs";
+import { BsFilter, BsThreeDotsVertical } from "react-icons/bs";
 import ChatCard from "./ChatCard/ChatCard";
 import { useState } from "react";
 
@@ -16,7 +16,7 @@ const HomePage = () => {
   return (
     <div className="relative">
       <div className=" w-full py-14 bg-[#4ca3eb] "></div>
-      <div className="flex bg-[#f0f2f5] h-[90vh] absolute top-6 left-6 w-full  rounded-lg">
+      <div className="flex bg-[#f0f2f5] h-[90vh] absolute top-[5vh] w-[96vw] left-[2vw] rounded-lg">
         <div className="left w-[30%] bg-[#e8e9ec] h-full rounded-lg">
           <div className="w-full rounded-lg">
             <div className="flex justify-between items-center p-3 rounded-lg">
@@ -77,16 +77,29 @@ const HomePage = () => {
 
         {/* Message part */}
         {currentChat && (
-          <div>
-            <div>
-              <div>
-                <div>
-                  <img className="w-10 h-10 rounded-full" src="nigga.png" alt="" />
+          <div className="w-[70%] relative">
+            <div className="header absolute top-0 w-full bg-[#f0f2f5] ">
+              <div className="flex justify-between  ">
+                <div className="py-3 space-x-4 flex items-center px-3">
+                  <img
+                    className="w-10 h-10 rounded-full"
+                    src="nigga.png"
+                    alt=""
+                  />
                   <p>username</p>
                 </div>
-                
+                <div className="py-3 flex space-x-4 items-center px-3">
+                  <AiOutlineSearch />
+                  <BsThreeDotsVertical />
+                </div>
               </div>
             </div>
+
+            {/* message seaction */}
+            <div>
+
+            </div>
+            
           </div>
         )}
       </div>
