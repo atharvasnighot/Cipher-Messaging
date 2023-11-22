@@ -1,17 +1,29 @@
 import { TbCircleDashed } from "react-icons/tb";
 import { BiCommentDetail } from "react-icons/bi";
 import { AiOutlineSearch } from "react-icons/ai";
-import { BsFilter, BsThreeDotsVertical } from "react-icons/bs";
+import { ImAttachment } from "react-icons/im";
+import {
+  BsEmojiSmile,
+  BsFilter,
+  BsMicFill,
+  BsThreeDotsVertical,
+} from "react-icons/bs";
+
 import ChatCard from "./ChatCard/ChatCard";
 import { useState } from "react";
+import MessageCard from "./MessageCard/MessageCard";
+import "./HomePage.css";
 
 const HomePage = () => {
   const [querys, setQuerys] = useState(null);
   const [currentChat, setCurrentChat] = useState(null);
+  const [content, setContent] = useState("");
 
   const handleClickOnChatCard = () => {
     setCurrentChat(true);
   };
+
+  const handleCreateNewMessage = () => {};
   const handleSearch = () => {};
   return (
     <div className="relative">
@@ -51,11 +63,10 @@ const HomePage = () => {
               </div>
             </div>
             {/* {All user} */}
-            <div className="bg-white overflow-y-scroll h-[76.8vh] px-3">
+            <div className="bg-white overflow-y-scroll h-[72vh] px-3">
               {querys &&
                 [1, 1, 1, 1].map((item) => (
                   <div onClick={handleClickOnChatCard}>
-                    {" "}
                     <hr />
                     <ChatCard />{" "}
                   </div>
@@ -95,11 +106,35 @@ const HomePage = () => {
               </div>
             </div>
 
-            {/* message seaction */}
-            <div>
-
+            {/* message section */}
+            <div className="px-10 h-[85vh] overflow-y-scroll bg-slate-400">
+              <div className="space-y-1 flex flex-col justify-center border mt-20 py-2">
+                {/* {[1,1,1,1].map((item,i) => <MessageCard isReqUserMessage={i%2===0} content={"hey"} />)} */}
+              </div>
             </div>
-            
+            {/* Footer Part */}
+            <div className="footer bg-[#f0f2f5] absolute bottom-0 w-full py-3 text-2xl">
+              <div className="flex justify-between items-center px-5 relative">
+                <BsEmojiSmile className="cursor-pointer" />
+                <ImAttachment />
+
+                <input
+                  type="text"
+                  className="py-2 outline-none border-none bg-white pl-4 rounded-md w-[85%]"
+                  onChange={(e) => setContent(e.target.value)}
+                  placeholder="Type Message"
+                  value={content}
+                  onKeyPress={(e) => {
+                    if (e.key == "Enter") {
+                      handleCreateNewMessage();
+                      setContent("");
+                    }
+                  }}
+                />
+
+                <BsMicFill />
+              </div>
+            </div>
           </div>
         )}
       </div>
