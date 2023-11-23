@@ -28,7 +28,7 @@ const HomePage = () => {
   return (
     <div className="relative">
       <div className=" w-full py-14 bg-[#4ca3eb] "></div>
-      <div className="flex bg-[#f0f2f5] h-[90vh] absolute top-[5vh] w-[96vw] left-[2vw] rounded-lg">
+      <div className="flex bg-[#f0f2f5] h-[93vh] absolute top-[3vh] w-[98vw] left-[1vw] rounded-lg">
         <div className="left w-[30%] bg-[#e8e9ec] h-full rounded-lg">
           <div className="w-full rounded-lg">
             <div className="flex justify-between items-center p-3 rounded-lg">
