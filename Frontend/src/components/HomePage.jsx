@@ -28,9 +28,9 @@ const HomePage = () => {
   return (
     <div className="relative">
       <div className=" w-full py-14 bg-[#4ca3eb] "></div>
-      <div className="flex bg-[#f0f2f5] h-[93vh] absolute top-[5vh] w-[98vw] left-[1vw] rounded-lg">
-        <div className="left w-[30%] bg-[#e8e9ec] h-full rounded-lg">
-          <div className="w-full rounded-lg">
+      <div className="flex bg-[#f0f2f5] h-[93vh] absolute top-[4vh] w-[98vw] left-[1vw] rounded-lg">
+        <div className="left w-[30%] bg-white h-full rounded-lg">
+          <div className="w-full rounded-lg bg-[#ced2d8]">
             <div className="flex justify-between items-center p-3 rounded-lg">
               <div className="flex items-center space-x-3 ">
                 <img
@@ -63,9 +63,9 @@ const HomePage = () => {
               </div>
             </div>
             {/* {All user} */}
-            <div className="bg-white overflow-y-scroll h-[72vh] px-3">
+            <div className="bg-white px-3 max-h-[calc(100vh-200px)] overflow-y-auto" >
               {querys &&
-                [1, 1, 1, 1].map((item) => (
+                [1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,,1,1].map((item) => (
                   <div onClick={handleClickOnChatCard}>
                     <hr />
                     <ChatCard />{" "}
@@ -77,11 +77,11 @@ const HomePage = () => {
 
         {/* deafault whatsapp page */}
         {!currentChat && (
-          <div className="w-[50%] flex flex-col items-center justify-center h-full mx-20">
-            <div className="max-w-[50%] text-center ">
-              <img className="opacity-70" src="cipher.png" alt="" />
-              <h1 className="text-4xl text-gray-600">Cipher Messaging</h1>
-              <p className="my-9">Send and recieve messages </p>
+          <div className="max-w-max flex flex-col items-center justify-center h-full mx-20 ">
+            <div className=" max-w-[50%] text-center">
+              <img className="opacity-70 mx-auto " src="cipher.png" alt="" />
+              <h1 className="text-4xl text-gray-800 ">Cipher Messaging</h1>
+              <p className="my-9 text-xl">Send and recieve messages </p>
             </div>
           </div>
         )}
@@ -107,7 +107,7 @@ const HomePage = () => {
             </div>
 
             {/* message section */}
-            <div className="px-10 h-[85vh] overflow-y-scroll bg-slate-400">
+            <div className="px-10 h-[85vh] overflow-y-auto bg-slate-100">
               <div className="space-y-1 flex flex-col justify-center border mt-20 py-2">
                 {/* {[1,1,1,1].map((item,i) => <MessageCard isReqUserMessage={i%2===0} content={"hey"} />)} */}
               </div>
