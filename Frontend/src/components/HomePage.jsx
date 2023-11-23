@@ -133,6 +133,7 @@ const HomePage = () => {
                 />
 
                 <BsMicFill />
+                
               </div>
             </div>
           </div>
