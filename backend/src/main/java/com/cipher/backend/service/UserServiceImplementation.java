@@ -7,11 +7,14 @@ import com.cipher.backend.repository.UserRepository;
 import com.cipher.backend.request.UpdateUserRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class UserServiceImplementation implements UserService {
+
 
     private UserRepository userRepository;
 
@@ -47,12 +50,19 @@ public class UserServiceImplementation implements UserService {
     }
 
     @Override
-    public User updateUser(Integer userId, UpdateUserRequest req) {
-        return null;
+    public User updateUser(Integer userId, UpdateUserRequest req) throws UserException {
+        User user = findUserById(userId);
+
+        if (req.getFullName() != null)
+            user.setFullName(req.getFullName());
+        if (req.getProfilePicture() != null)
+            user.setProfilePicture(req.getProfilePicture());
+        return userRepository.save(user);
     }
 
     @Override
     public List<User> searchUser(String query) {
-        return null;
+        List<User> users = userRepository.searchUser(query);
+        return users;
     }
 }
