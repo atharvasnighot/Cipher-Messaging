@@ -9,30 +9,49 @@ import {
   BsThreeDotsVertical,
 } from "react-icons/bs";
 
+import { useNavigate } from "react-router-dom";
 import ChatCard from "./ChatCard/ChatCard";
 import { useState } from "react";
 import MessageCard from "./MessageCard/MessageCard";
 import "./HomePage.css";
+import Profile from "./Profile/Profile";
 
 const HomePage = () => {
   const [querys, setQuerys] = useState(null);
   const [currentChat, setCurrentChat] = useState(null);
   const [content, setContent] = useState("");
+  const [isProfile, setProfile] = useState(false);
+  const navigate = useNavigate();
 
   const handleClickOnChatCard = () => {
     setCurrentChat(true);
   };
 
+  const handleNavigate = () => {
+    // navigate("/profile") 
+    setProfile(true);
+  };
   const handleCreateNewMessage = () => {};
+
   const handleSearch = () => {};
   return (
-    <div className="relative">
+    <div className="relative ">
       <div className=" w-full py-14 bg-[#4ca3eb] "></div>
       <div className="flex bg-[#f0f2f5] h-[93vh] absolute top-[4vh] w-[98vw] left-[1vw] rounded-lg">
         <div className="left w-[30%] bg-white h-full rounded-lg">
-          <div className="w-full rounded-lg bg-[#ced2d8]">
+             {/* profile */}
+
+             {isProfile && <div className="w-full h-full"> <Profile/> </div>}
+
+          { !isProfile && <div className="w-full rounded-lg bg-[#ced2d8]">
+            
+       
+            {/* home */}
             <div className="flex justify-between items-center p-3 rounded-lg">
-              <div className="flex items-center space-x-3 ">
+              <div
+                onClick={handleNavigate}
+                className="flex items-center space-x-3 "
+              >
                 <img
                   className="rounded-full w-10 h-10 cursor-pointer px-1 py-1"
                   src="luffy.jpeg"
@@ -63,16 +82,21 @@ const HomePage = () => {
               </div>
             </div>
             {/* {All user} */}
-            <div className="bg-white px-3 max-h-[calc(100vh-200px)] overflow-y-auto" >
+            <div className="bg-white px-3 max-h-[calc(100vh-200px)] overflow-y-auto">
               {querys &&
-                [1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,,1,1].map((item) => (
+                [
+                  1,
+                  1,
+                  1,
+                  1            
+                ].map((item) => (
                   <div onClick={handleClickOnChatCard}>
                     <hr />
                     <ChatCard />{" "}
                   </div>
                 ))}
             </div>
-          </div>
+          </div>}
         </div>
 
         {/* deafault whatsapp page */}
@@ -88,10 +112,10 @@ const HomePage = () => {
 
         {/* Message part */}
         {currentChat && (
-          <div className="w-[70%] relative">
-            <div className="header absolute top-0 w-full bg-[#f0f2f5] ">
-              <div className="flex justify-between  ">
-                <div className="py-3 space-x-4 flex items-center px-3">
+          <div className="w-[70%] relative ">
+            <div className="header absolute top-0 w-full bg-[#f0f2f5] rounded-lg">
+              <div className="flex justify-between rounded-lg ">
+                <div className="py-3 space-x-4 flex items-center px-3 ">
                   <img
                     className="w-10 h-10 rounded-full"
                     src="nigga.png"
@@ -107,9 +131,14 @@ const HomePage = () => {
             </div>
 
             {/* message section */}
-            <div className="px-10 h-[85vh] overflow-y-auto bg-slate-100">
+            <div className="px-10 h-[85vh] overflow-y-auto bg-slate-100 rounded-lg">
               <div className="space-y-1 flex flex-col justify-center border mt-20 py-2">
-                {/* {[1,1,1,1].map((item,i) => <MessageCard isReqUserMessage={i%2===0} content={"hey"} />)} */}
+                {[1, 1, 1, 1, 1, 1].map((item, i) => (
+                  <MessageCard
+                    isReqUserMessage={i % 2 === 0}
+                    content={"message"}
+                  />
+                ))}
               </div>
             </div>
             {/* Footer Part */}
@@ -133,7 +162,6 @@ const HomePage = () => {
                 />
 
                 <BsMicFill />
-
               </div>
             </div>
           </div>
