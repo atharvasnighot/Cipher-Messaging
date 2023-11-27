@@ -23,4 +23,8 @@ public class User {
     private String profilePicture;
     private String password;
 
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }
