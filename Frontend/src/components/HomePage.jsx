@@ -33,6 +33,10 @@ const HomePage = () => {
   };
   const handleCreateNewMessage = () => {};
 
+  const handleCloseOpenProfile =()=>{
+    setProfile(false);
+  }
+
   const handleSearch = () => {};
   return (
     <div className="relative ">
@@ -41,7 +45,7 @@ const HomePage = () => {
         <div className="left w-[30%] bg-white h-full rounded-lg">
              {/* profile */}
 
-             {isProfile && <div className="w-full h-full"> <Profile/> </div>}
+             {isProfile && <div className="w-full h-full"> <Profile handleCloseOpenProfile={handleCloseOpenProfile}/> </div>}
 
           { !isProfile && <div className="w-full rounded-lg bg-[#ced2d8]">
             
