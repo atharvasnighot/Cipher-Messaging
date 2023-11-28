@@ -19,7 +19,7 @@ const Profile = ({handleCloseOpenProfile}) => {
 
   return (
     <div className="w-full h-full bg-white rounded-md">
-      <div className="flex items-center rounded-md space-x-10 bg-[#1c354f] text-white pt-16 px-10 pb-6 relative">
+      <div className="flex items-center rounded-md space-x-10 bg-[#3e7bd2] text-white pt-16 px-10 pb-6 relative">
         <BsArrowLeft
           className="cursor-pointer text-xl font-bold absolute top-4 left-4"
           onClick={handleCloseOpenProfile}
@@ -67,12 +67,12 @@ const Profile = ({handleCloseOpenProfile}) => {
         </div>
       </div>
 
-      <div className="px-3 my-5">
+      {/* <div className="px-3 my-5">
         <p className="py-10">
           This is not your username, this name will be visible to your WhatsApp
           contacts
         </p>
-      </div>
+      </div> */}
     </div>
   );
 };
