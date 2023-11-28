@@ -30,5 +30,6 @@ Cipher Messaging is a web application that provides a messaging platform similar
 
    ```bash
    git clone https://github.com/atharvasnighot/Cipher-Messaging.git
+   ```
 
 ![image](https://github.com/atharvasnighot/Cipher-Messaging/assets/96972212/2d50a65f-f93a-445c-a2e1-fe9dfbe0760a)
