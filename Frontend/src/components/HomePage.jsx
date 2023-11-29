@@ -28,14 +28,14 @@ const HomePage = () => {
   };
 
   const handleNavigate = () => {
-    // navigate("/profile") 
+    // navigate("/profile")
     setProfile(true);
   };
   const handleCreateNewMessage = () => {};
 
-  const handleCloseOpenProfile =()=>{
+  const handleCloseOpenProfile = () => {
     setProfile(false);
-  }
+  };
 
   const handleSearch = () => {};
   return (
@@ -43,64 +43,68 @@ const HomePage = () => {
       <div className=" w-full py-14 bg-[#4ca3eb] "></div>
       <div className="flex bg-[#f0f2f5] h-[93vh] absolute top-[4vh] w-[98vw] left-[1vw] rounded-lg">
         <div className="left w-[30%] bg-white h-full rounded-lg">
-             {/* profile */}
+          {/* profile */}
 
-             {isProfile && <div className="w-full h-full"> <Profile handleCloseOpenProfile={handleCloseOpenProfile}/> </div>}
+          {isProfile && (
+            <div className="w-full h-full">
+              {" "}
+              <Profile handleCloseOpenProfile={handleCloseOpenProfile} />{" "}
+            </div>
+          )}
 
-          { !isProfile && <div className="w-full rounded-lg bg-[#ced2d8]">
-            
-       
-            {/* home */}
-            <div className="flex justify-between items-center p-3 rounded-lg">
-              <div
-                onClick={handleNavigate}
-                className="flex items-center space-x-3 "
-              >
-                <img
-                  className="rounded-full w-10 h-10 cursor-pointer px-1 py-1"
-                  src="luffy.jpeg"
-                  alt=""
+          {!isProfile && (
+            <div className="w-full rounded-lg bg-[#ced2d8]">
+              {/* home */}
+              <div className="flex justify-between items-center p-3 rounded-lg">
+                <div
+                  onClick={handleNavigate}
+                  className="flex items-center space-x-3 "
+                >
+                  <img
+                    className="rounded-full w-10 h-10 cursor-pointer px-1 py-1"
+                    src="luffy.jpeg"
+                    alt=""
+                  />
+                  <p>username</p>
+                </div>
+                <div className="space-x-3 text-2xl flex">
+                  <TbCircleDashed
+                    className="cursor-pointer"
+                    onClick={() => navigate("/status")}
+                  />
+                  <BiCommentDetail />
+                </div>
+              </div>
+
+              <div className="relative flex justify-center items-center bg-white py-4 px-3">
+                <input
+                  className="outline-none bg-slate-200 rounded-md border-b-2 border-white focus:border-blue-700 w-[93%] pl-9 py-2"
+                  type="text"
+                  placeholder="Search or Start new Chat"
+                  onChange={(e) => {
+                    setQuerys(e.target.value);
+                    handleSearch(e.target.value);
+                  }}
+                  value={querys}
                 />
-                <p>username</p>
-              </div>
-              <div className="space-x-3 text-2xl flex">
-                <TbCircleDashed className="cursor-pointer" onClick={()=>navigate("/status")}/>
-                <BiCommentDetail />
-              </div>
-            </div>
 
-            <div className="relative flex justify-center items-center bg-white py-4 px-3">
-              <input
-                className="border-none outline-none bg-slate-200 rounded-md  w-[93%] pl-9 py-2"
-                type="text"
-                placeholder="Search or Start new Chat"
-                onChange={(e) => {
-                  setQuerys(e.target.value);
-                  handleSearch(e.target.value);
-                }}
-                value={querys}
-              />
-              <AiOutlineSearch className="left-5 top top-7 absolute" />
-              <div>
-                <BsFilter className="ml-4 text-3xl" />
+                <AiOutlineSearch className="left-5 top top-7 absolute" />
+                <div>
+                  <BsFilter className="ml-4 text-3xl" />
+                </div>
+              </div>
+              {/* {All user} */}
+              <div className="bg-white px-3 max-h-[calc(100vh-200px)] overflow-y-auto">
+                {querys &&
+                  [1, 1, 1, 1].map((item) => (
+                    <div onClick={handleClickOnChatCard}>
+                      <hr />
+                      <ChatCard />{" "}
+                    </div>
+                  ))}
               </div>
             </div>
-            {/* {All user} */}
-            <div className="bg-white px-3 max-h-[calc(100vh-200px)] overflow-y-auto">
-              {querys &&
-                [
-                  1,
-                  1,
-                  1,
-                  1            
-                ].map((item) => (
-                  <div onClick={handleClickOnChatCard}>
-                    <hr />
-                    <ChatCard />{" "}
-                  </div>
-                ))}
-            </div>
-          </div>}
+          )}
         </div>
 
         {/* deafault whatsapp page */}
@@ -146,7 +150,7 @@ const HomePage = () => {
               </div>
             </div>
             {/* Footer Part */}
-            <div className="footer bg-[#f0f2f5] absolute bottom-0 w-full py-3 text-2xl">
+            <div className="footer bg-[#f0f2f5] absolute bottom-0 w-full py-3 text-2xl rounded-lg ">
               <div className="flex justify-between items-center px-5 relative">
                 <BsEmojiSmile className="cursor-pointer" />
                 <ImAttachment />
@@ -164,7 +168,6 @@ const HomePage = () => {
                     }
                   }}
                 />
-
                 <BsMicFill />
               </div>
             </div>

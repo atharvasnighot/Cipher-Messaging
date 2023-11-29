@@ -1,10 +1,10 @@
 const ChatCard = () => {
   return (
-    <div className="flex items-center justify-center py-2 group cursor-pointer">
-      <div className="w-[20%]">
+    <div className="flex items-center justify-center py-2 group cursor-pointer rounded-md transition-all duration-300 transform hover:shadow-lg hover:bg-slate-300">
+    <div className="w-[20%]">
         <img className="h-14 w-14 rounded-full" src="nigga.png" alt="" />
       </div>
-      <div className="pl-5 w-[80%]">
+      <div className="pl-5 w-[80%] pr-2">
         <div className="flex justify-between items-center">
           <p className="text-lg">username</p>
           <p className="text-sm">timestamp</p>
@@ -17,8 +17,8 @@ const ChatCard = () => {
             </div>
         </div>
       </div>
-      
     </div>
+
   );
 };
 
