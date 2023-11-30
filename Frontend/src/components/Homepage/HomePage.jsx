@@ -10,11 +10,11 @@ import {
 } from "react-icons/bs";
 
 import { useNavigate } from "react-router-dom";
-import ChatCard from "./ChatCard/ChatCard";
 import { useState } from "react";
-import MessageCard from "./MessageCard/MessageCard";
 import "./HomePage.css";
-import Profile from "./Profile/Profile";
+import ChatCard from './../ChatCard/ChatCard';
+import MessageCard from './../MessageCard/MessageCard';
+import Profile from './../Profile/Profile';
 
 const HomePage = () => {
   const [querys, setQuerys] = useState(null);
@@ -48,7 +48,7 @@ const HomePage = () => {
           {isProfile && (
             <div className="w-full h-full">
               {" "}
-              <Profile handleCloseOpenProfile={handleCloseOpenProfile} />{" "}
+              <Profile handleCloseOpenProfile={handleCloseOpenProfile}/>
             </div>
           )}
 
@@ -98,8 +98,7 @@ const HomePage = () => {
                 {querys &&
                   [1, 1, 1, 1].map((item) => (
                     <div onClick={handleClickOnChatCard}>
-                      <hr />
-                      <ChatCard />{" "}
+                      <hr /><ChatCard/>
                     </div>
                   ))}
               </div>

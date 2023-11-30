@@ -1,5 +1,5 @@
 import { Route, Routes } from 'react-router-dom'
-import HomePage from './components/Homepage'
+import HomePage from './components/Homepage/HomePage'
 import './App.css'
 import Status from './components/Status/Status'
 import StatusViewer from './components/Status/StatusViewer'
