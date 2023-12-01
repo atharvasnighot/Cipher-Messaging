@@ -2,6 +2,8 @@ import { TbCircleDashed } from "react-icons/tb";
 import { BiCommentDetail } from "react-icons/bi";
 import { AiOutlineSearch } from "react-icons/ai";
 import { ImAttachment } from "react-icons/im";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 import {
   BsEmojiSmile,
   BsFilter,
@@ -12,16 +14,10 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import "./HomePage.css";
-<<<<<<< HEAD
 import ChatCard from "./../ChatCard/ChatCard";
 import MessageCard from "./../MessageCard/MessageCard";
 import Profile from "./../Profile/Profile";
 import CreateGroup from "../Group/CreateGroup";
-=======
-import ChatCard from './../ChatCard/ChatCard';
-import MessageCard from './../MessageCard/MessageCard';
-import Profile from './../Profile/Profile';
->>>>>>> parent of 32fc121 (Added MUI and CreateGroup component)
 
 const HomePage = () => {
   const [querys, setQuerys] = useState(null);
@@ -40,15 +36,20 @@ const HomePage = () => {
     setProfile(true);
   };
   const handleCreateNewMessage = () => {};
-<<<<<<< HEAD
   const handleCreateGroup = () => {
     setIsGroup(true);
   };
-=======
->>>>>>> parent of 32fc121 (Added MUI and CreateGroup component)
 
   const handleCloseOpenProfile = () => {
     setProfile(false);
+  };
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (e) => {
+    setAnchorEl(e.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
   };
 
   const handleSearch = () => {};
@@ -88,7 +89,6 @@ const HomePage = () => {
                     onClick={() => navigate("/status")}
                   />
                   <BiCommentDetail />
-<<<<<<< HEAD
                   <div>
                     <BsThreeDotsVertical
                       id="basic-button"
@@ -114,8 +114,6 @@ const HomePage = () => {
                       <MenuItem onClick={handleClose}>Logout</MenuItem>
                     </Menu>
                   </div>
-=======
->>>>>>> parent of 32fc121 (Added MUI and CreateGroup component)
                 </div>
               </div>
 
