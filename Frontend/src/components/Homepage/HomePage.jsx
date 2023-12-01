@@ -2,6 +2,8 @@ import { TbCircleDashed } from "react-icons/tb";
 import { BiCommentDetail } from "react-icons/bi";
 import { AiOutlineSearch } from "react-icons/ai";
 import { ImAttachment } from "react-icons/im";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 import {
   BsEmojiSmile,
   BsFilter,
@@ -12,9 +14,9 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import "./HomePage.css";
-import ChatCard from './../ChatCard/ChatCard';
-import MessageCard from './../MessageCard/MessageCard';
-import Profile from './../Profile/Profile';
+import ChatCard from "./../ChatCard/ChatCard";
+import MessageCard from "./../MessageCard/MessageCard";
+import Profile from "./../Profile/Profile";
 
 const HomePage = () => {
   const [querys, setQuerys] = useState(null);
@@ -31,7 +33,17 @@ const HomePage = () => {
     // navigate("/profile")
     setProfile(true);
   };
+
+  const [anchorEl, setAnchorEl] = useState();
+  const open = Boolean(anchorEl);
+  const handleClick = (e) => {
+    setAnchorEl(e.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   const handleCreateNewMessage = () => {};
+  const handleCreateGroup = () => {};
 
   const handleCloseOpenProfile = () => {
     setProfile(false);
@@ -48,7 +60,7 @@ const HomePage = () => {
           {isProfile && (
             <div className="w-full h-full">
               {" "}
-              <Profile handleCloseOpenProfile={handleCloseOpenProfile}/>
+              <Profile handleCloseOpenProfile={handleCloseOpenProfile} />
             </div>
           )}
 
@@ -73,6 +85,29 @@ const HomePage = () => {
                     onClick={() => navigate("/status")}
                   />
                   <BiCommentDetail />
+                  <div>
+                    <BsThreeDotsVertical
+                      id="basic-button"
+                      aria-controls={open ? "basic-menu" : undefined}
+                      aria-haspopup="true"
+                      aria-expanded={open ? "true" : undefined}
+                      onClick={handleClick}
+                    />
+
+                    <Menu
+                      id="basic-menu"
+                      anchorEl={anchorEl}
+                      open={open}
+                      onClose={handleClose}
+                      MenuListProps={{
+                        "aria-labelledby": "basic-button",
+                      }}
+                    >
+                      <MenuItem onClick={handleClose}>Profile</MenuItem>
+                      <MenuItem onClick={handleCreateGroup}>Create Group</MenuItem>
+                      <MenuItem onClick={handleClose}>Logout</MenuItem>
+                    </Menu>
+                  </div>
                 </div>
               </div>
 
@@ -98,7 +133,8 @@ const HomePage = () => {
                 {querys &&
                   [1, 1, 1, 1].map((item) => (
                     <div onClick={handleClickOnChatCard}>
-                      <hr /><ChatCard/>
+                      <hr />
+                      <ChatCard />
                     </div>
                   ))}
               </div>

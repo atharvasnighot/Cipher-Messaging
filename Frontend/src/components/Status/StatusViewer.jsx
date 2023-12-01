@@ -3,7 +3,7 @@ import { stories } from "./DummyStory";
 import ProgressBar from "./ProgressBar";
 import { BsArrowLeft } from "react-icons/bs";
 import { AiOutlineClose } from "react-icons/ai";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 const StatusViewer = () => {
   const [currentStoryIndex, setCurrentStoryIndex] = useState(0);
   const [activeIndex, setActiveIndex] = useState(0);
