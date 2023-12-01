@@ -17,6 +17,7 @@ import "./HomePage.css";
 import ChatCard from "./../ChatCard/ChatCard";
 import MessageCard from "./../MessageCard/MessageCard";
 import Profile from "./../Profile/Profile";
+import CreateGroup from "../Group/CreateGroup";
 
 const HomePage = () => {
   const [querys, setQuerys] = useState(null);
@@ -24,6 +25,7 @@ const HomePage = () => {
   const [content, setContent] = useState("");
   const [isProfile, setProfile] = useState(false);
   const navigate = useNavigate();
+  const [isGroup, setIsGroup] = useState(false);
 
   const handleClickOnChatCard = () => {
     setCurrentChat(true);
@@ -43,7 +45,9 @@ const HomePage = () => {
     setAnchorEl(null);
   };
   const handleCreateNewMessage = () => {};
-  const handleCreateGroup = () => {};
+  const handleCreateGroup = () => {
+    setIsGroup(true);
+  };
 
   const handleCloseOpenProfile = () => {
     setProfile(false);
@@ -56,7 +60,7 @@ const HomePage = () => {
       <div className="flex bg-[#f0f2f5] h-[93vh] absolute top-[4vh] w-[98vw] left-[1vw] rounded-lg">
         <div className="left w-[30%] bg-white h-full rounded-lg">
           {/* profile */}
-
+          {isGroup && <CreateGroup />}
           {isProfile && (
             <div className="w-full h-full">
               {" "}
@@ -64,8 +68,9 @@ const HomePage = () => {
             </div>
           )}
 
-          {!isProfile && (
+          {!isProfile && !isGroup && (
             <div className="w-full rounded-lg bg-[#ced2d8]">
+            
               {/* home */}
               <div className="flex justify-between items-center p-3 rounded-lg">
                 <div
@@ -104,7 +109,9 @@ const HomePage = () => {
                       }}
                     >
                       <MenuItem onClick={handleClose}>Profile</MenuItem>
-                      <MenuItem onClick={handleCreateGroup}>Create Group</MenuItem>
+                      <MenuItem onClick={handleCreateGroup}>
+                        Create Group
+                      </MenuItem>
                       <MenuItem onClick={handleClose}>Logout</MenuItem>
                     </Menu>
                   </div>
