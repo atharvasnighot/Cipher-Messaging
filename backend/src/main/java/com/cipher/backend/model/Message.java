@@ -17,6 +17,8 @@ public class Message {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
+    private String content;
+
     private LocalDateTime timeStamp;
 
     @ManyToOne
