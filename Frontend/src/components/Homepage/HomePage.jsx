@@ -63,12 +63,13 @@ const HomePage = () => {
           {isProfile && (
             <div className="w-full h-full">
               {" "}
-              <Profile handleCloseOpenProfile={handleCloseOpenProfile} />
+              <Profile handleCloseOpenProfile={handleCloseOpenProfile}/>
             </div>
           )}
 
           {!isProfile && !isGroup && (
             <div className="w-full rounded-lg bg-[#ced2d8]">
+            
               {/* home */}
               <div className="flex justify-between items-center p-3 rounded-lg">
                 <div
@@ -138,8 +139,7 @@ const HomePage = () => {
                 {querys &&
                   [1, 1, 1, 1].map((item) => (
                     <div onClick={handleClickOnChatCard}>
-                      <hr />
-                      <ChatCard />
+                      <hr /><ChatCard/>
                     </div>
                   ))}
               </div>
