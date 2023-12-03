@@ -10,8 +10,8 @@ public class HomeController {
 
     @GetMapping("/")
     public ResponseEntity<String> HomeController(){
-        System.out.println("Hi");
-        return new ResponseEntity<String>("Welcome to Whatsapp", HttpStatus.OK);
+        System.out.println("HomeController");
+        return new ResponseEntity<String>("Welcome to Cipher", HttpStatus.OK);
     }
 
 }

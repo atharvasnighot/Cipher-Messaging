@@ -58,6 +58,7 @@ public class AuthController {
         String jwt = tokenProvider.generateToken(authentication);
         AuthResponse response = new AuthResponse(jwt, true);
 
+        System.out.println("Email Registered");
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 
