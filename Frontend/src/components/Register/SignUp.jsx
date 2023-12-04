@@ -1,5 +1,4 @@
 import { Alert, Button, Snackbar } from "@mui/material";
-import { blue } from "@mui/material/colors";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -24,16 +23,28 @@ const SignUp = () => {
     <div className="bg-[#131419]">
       <div>
         <div className="flex flex-col justify-center items-center min-h-screen">
-        <div className="w-[30%] p-10 bg-black rounded-md shadow-lg ring-1 ">
-
+          <div
+            className="w-[30%] p-10 bg-black rounded-md "
+            style={{
+              boxShadow:
+                "-15px -15px 20px  rgba(255, 255, 255, 0.05), 5px 5px 15px rgba(0, 0, 0, 0.5)",
+            }}
+          >
             <form onSubmit={handleSubmit} className="space-y-5">
               <div>
-              <h1 className="text-3xl font-semibold text-gray-200 pb-6 items-center text-center">
-                Cipher Messaging
-              </h1>
-                <p className="mb-2 text-xl text-[#c7c7c7]">User Name</p>
+                <div className="flex justify-center mb-3">
+                  <img
+                    className="rounded-full w-[40px] h-[40px] cursor-pointer mr-6"
+                    src="cipher.png"
+                    alt=""
+                  />
+                  <h1 className="text-3xl font-semibold text-gray-200 pb-6 items-center text-center">
+                    Cipher Messaging
+                  </h1>
+                </div>
+                <p className="mb-2 text-xl text-[#fffcfc]">User Name</p>
                 <input
-                  placeholder="Enter username"
+                  placeholder="  Enter username"
                   name="full_name"
                   type="text"
                   className="py-2 border-gray-500 w-full rounded-md border transition duration-300 ease-in-out hover:border-blue-700 focus:outline-none hover:outline-thin focus:outline-thin bg-black"
@@ -42,9 +53,9 @@ const SignUp = () => {
                 />
               </div>
               <div>
-                <p className="mb-2 text-xl text-[#c7c7c7]">Email</p>
+                <p className="mb-2 text-xl text-[#fffcfc]">Email</p>
                 <input
-                  placeholder="Enter email"
+                  placeholder="  Enter email"
                   name="full_name"
                   type="text"
                   className="py-2 border-gray-500 w-full rounded-md border transition duration-300 ease-in-out hover:border-blue-700 focus:outline-none hover:outline-thin focus:outline-thin bg-black"
@@ -53,20 +64,25 @@ const SignUp = () => {
                 />
               </div>
               <div>
-                <p className="mb-2 text-xl text-[#c7c7c7]">Password</p>
+                <p className="mb-2 text-xl text-[#fffcfc]">Password</p>
                 <input
-                  placeholder="Enter your password"
+                  placeholder=" Enter your password"
                   name="full_name"
                   type="text"
                   className="py-2 border-gray-500 w-full rounded-md border transition duration-300 ease-in-out hover:border-blue-700 focus:outline-none hover:outline-thin focus:outline-thin bg-black"
+                  style={{ color: "blue" }}
                   onChange={(e) => handleChange(e)}
                   value={inputData.password}
                 />
               </div>
-              <div>
+              <div className=" w-[50%] mx-auto">
                 <Button
                   type="submit"
-                  sx={{ padding: ".5rem 0rem" ,fontSize: "1.1rem" }}
+                  sx={{
+                    padding: ".5rem 0rem",
+                    fontSize: "1.1rem",
+                    borderRadius: "40px",
+                  }}
                   variant="outlined"
                   className="w-full"
                 >
@@ -74,28 +90,36 @@ const SignUp = () => {
                 </Button>
               </div>
             </form>
-            <div className="flex space-x-3 items-center mt-5">
+            <div className="flex space-x-3 items-center mt-5 ">
               <p className="text-white">Already have an Account?</p>
-              <Button variant="text" sx={{ padding: ".5rem 0rem" ,fontSize: "1.1rem",borderRadius: '40px'  }}   onClick={() => navigate("/signin")}>
-              {" "}
-              Sign In
-            </Button>
+              <Button
+                variant="text"
+                sx={{
+                  padding: ".5rem 0rem",
+                  fontSize: "1.1rem",
+                  borderRadius: "40px",
+                }}
+                onClick={() => navigate("/signin")}
+              >
+                {" "}
+                Sign In
+              </Button>
             </div>
           </div>
         </div>
         <Snackbar
-        open={openSbar}
-        autoHideDuration={3000}
-        onClose={handleSbarClose}
-      >
-        <Alert
+          open={openSbar}
+          autoHideDuration={3000}
           onClose={handleSbarClose}
-          severity="success"
-          sx={{ width: "100%" }}
         >
-          Your Account has been successfully created!
-        </Alert>
-      </Snackbar>
+          <Alert
+            onClose={handleSbarClose}
+            severity="success"
+            sx={{ width: "100%" }}
+          >
+            Your Account has been successfully created!
+          </Alert>
+        </Snackbar>
       </div>
     </div>
   );
