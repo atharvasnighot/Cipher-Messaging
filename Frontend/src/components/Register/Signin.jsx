@@ -5,41 +5,41 @@ import { useNavigate } from "react-router-dom";
 
 const Signin = () => {
   const [inputData, setInputData] = useState({ email: "", password: "" });
-  const [openSbar,setOpenSbar]=useState(false);
+  const [openSbar, setOpenSbar] = useState(false);
   const navigate = useNavigate();
   const handleSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     setOpenSbar(true);
   };
   const handleChange = () => {};
-  const handleSbarClose=()=>{
+  const handleSbarClose = () => {
     setOpenSbar(false);
-  }
+  };
   return (
     <div>
       <div className="flex justify-center h-screen items-center">
         <div className="w-[30%] p-10 rounded-md shadow-md bg-white">
           <form onSubmit={handleSubmit} className="space-y-5 ">
             <div>
-              <h1 className="text-2xl font-semibold text-gray-700 pb-6 items-center text-center">
+              <h1 className="text-3xl font-semibold text-gray-700 pb-6 items-center text-center">
                 Cipher Messaging
               </h1>
-              <p className="mb-2">Email</p>
+              <p className="mb-2 text-xl">Email</p>
               <input
-                placeholder="Enter email adress.."
+                placeholder="Enter email address..."
                 type="text"
-                className="py-2 outline-blue-500 w-full rounded-md border "
+                className="py-2 outline-blue-500 w-full rounded-md border transition duration-300 ease-in-out hover:border-blue-700 focus:border-blue-700 hover:outline-thin focus:outline-thin"
                 onChange={handleChange}
                 value={inputData.email}
               />
             </div>
 
             <div>
-              <p className="mb-2">Password</p>
+              <p className="mb-2 text-xl">Password</p>
               <input
                 placeholder="Enter your password"
                 type="text"
-                className="py-2 outline-blue-600 w-full rounded-md border"
+                className="py-2 outline-blue-500 w-full rounded-md border transition duration-300 ease-in-out hover:border-blue-700 focus:border-blue-700 hover:outline-thin focus:outline-thin"
                 onChange={handleChange}
                 value={inputData.password}
               />
@@ -66,9 +66,17 @@ const Signin = () => {
         </div>
       </div>
 
-      <Snackbar open={openSbar} autoHideDuration={3000} onClose={handleSbarClose}>
-        <Alert onClose={handleSbarClose} severity="success" sx={{ width: "100%" }}>
-          This is a success message!
+      <Snackbar
+        open={openSbar}
+        autoHideDuration={3000}
+        onClose={handleSbarClose}
+      >
+        <Alert
+          onClose={handleSbarClose}
+          severity="success"
+          sx={{ width: "100%" }}
+        >
+          Login Successfull!
         </Alert>
       </Snackbar>
     </div>
