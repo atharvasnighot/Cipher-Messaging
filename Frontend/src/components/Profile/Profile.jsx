@@ -21,7 +21,7 @@ const Profile = ({handleCloseOpenProfile}) => {
     <div className="w-full h-full bg-white rounded-md">
       <div className="flex items-center rounded-md space-x-10 bg-[#3e7bd2] text-white pt-16 px-10 pb-6 relative">
         <BsArrowLeft
-          className="cursor-pointer text-xl font-bold absolute top-4 left-4"
+          className="cursor-pointer text-4xl absolute top-4 left-4"
           onClick={handleCloseOpenProfile}
         />
         <p className="cursor-pointer font-semibold text-2xl">Profile</p>
