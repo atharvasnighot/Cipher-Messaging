@@ -21,43 +21,44 @@ const SignUp = () => {
   };
 
   return (
-    <div>
+    <div className="bg-[#131419]">
       <div>
         <div className="flex flex-col justify-center items-center min-h-screen">
-          <div className="w-[30%] p-10 shadow-md bg-white rounded-md">
+        <div className="w-[30%] p-10 bg-black rounded-md shadow-lg ring-1 ">
+
             <form onSubmit={handleSubmit} className="space-y-5">
               <div>
-              <h1 className="text-3xl font-semibold text-gray-700 pb-6 items-center text-center">
+              <h1 className="text-3xl font-semibold text-gray-200 pb-6 items-center text-center">
                 Cipher Messaging
               </h1>
-                <p className="mb-2 text-xl">User Name</p>
+                <p className="mb-2 text-xl text-[#c7c7c7]">User Name</p>
                 <input
                   placeholder="Enter username"
                   name="full_name"
                   type="text"
-                  className="py-2 outline-blue-500 w-full rounded-md border transition duration-300 ease-in-out hover:border-blue-700 focus:border-blue-700 hover:outline-thin focus:outline-thin"
+                  className="py-2 border-gray-500 w-full rounded-md border transition duration-300 ease-in-out hover:border-blue-700 focus:outline-none hover:outline-thin focus:outline-thin bg-black"
                   onChange={(e) => handleChange(e)}
                   value={inputData.full_name}
                 />
               </div>
               <div>
-                <p className="mb-2 text-xl">Email</p>
+                <p className="mb-2 text-xl text-[#c7c7c7]">Email</p>
                 <input
                   placeholder="Enter email"
                   name="full_name"
                   type="text"
-                  className="py-2 outline-blue-500 w-full rounded-md border transition duration-300 ease-in-out hover:border-blue-700 focus:border-blue-700 hover:outline-thin focus:outline-thin"
+                  className="py-2 border-gray-500 w-full rounded-md border transition duration-300 ease-in-out hover:border-blue-700 focus:outline-none hover:outline-thin focus:outline-thin bg-black"
                   onChange={(e) => handleChange(e)}
                   value={inputData.email}
                 />
               </div>
               <div>
-                <p className="mb-2 text-xl">Password</p>
+                <p className="mb-2 text-xl text-[#c7c7c7]">Password</p>
                 <input
                   placeholder="Enter your password"
                   name="full_name"
                   type="text"
-                  className="py-2 outline-blue-500 w-full rounded-md border transition duration-300 ease-in-out hover:border-blue-700 focus:border-blue-700 hover:outline-thin focus:outline-thin"
+                  className="py-2 border-gray-500 w-full rounded-md border transition duration-300 ease-in-out hover:border-blue-700 focus:outline-none hover:outline-thin focus:outline-thin bg-black"
                   onChange={(e) => handleChange(e)}
                   value={inputData.password}
                 />
@@ -65,8 +66,8 @@ const SignUp = () => {
               <div>
                 <Button
                   type="submit"
-                  sx={{ bgcolor: blue[700], padding: ".5rem 0rem" }}
-                  variant="contained"
+                  sx={{ padding: ".5rem 0rem" ,fontSize: "1.1rem" }}
+                  variant="outlined"
                   className="w-full"
                 >
                   Sign Up
@@ -74,8 +75,8 @@ const SignUp = () => {
               </div>
             </form>
             <div className="flex space-x-3 items-center mt-5">
-              <p className="">Already have an Account?</p>
-              <Button variant="text" onClick={() => navigate("/signin")}>
+              <p className="text-white">Already have an Account?</p>
+              <Button variant="text" sx={{ padding: ".5rem 0rem" ,fontSize: "1.1rem",borderRadius: '40px'  }}   onClick={() => navigate("/signin")}>
               {" "}
               Sign In
             </Button>

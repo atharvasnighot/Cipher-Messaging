@@ -16,11 +16,11 @@ const Signin = () => {
     setOpenSbar(false);
   };
   return (
-    <div>
-      <div className="flex justify-center h-screen items-center">
-        <div className="w-[30%] p-10 rounded-md shadow-md bg-white">
+    <div className="bg-[#131419]"> 
+      <div className="flex justify-center h-screen items-center b">
+        <div className="w-[30%] p-10 rounded-md shadow-md ">
           <form onSubmit={handleSubmit} className="space-y-5 ">
-            <div>
+            <div >
               <h1 className="text-3xl font-semibold text-gray-700 pb-6 items-center text-center">
                 Cipher Messaging
               </h1>
