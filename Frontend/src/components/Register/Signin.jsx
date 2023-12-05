@@ -1,19 +1,39 @@
 import { Alert, Button, Snackbar } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { currentUser, login } from "../../Redux/Auth/Action";
 
 const Signin = () => {
   const [inputData, setInputData] = useState({ email: "", password: "",});
   const [openSbar, setOpenSbar] = useState(false);
   const navigate = useNavigate();
+  const dispatch=useDispatch();
+  const auth = useSelector((store) => store);
+  const token = localStorage.getItem("token");
   const handleSubmit = (e) => {
     e.preventDefault();
     setOpenSbar(true);
+    dispatch(login(inputData))
   };
-  const handleChange = () => {};
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setInputData((values) => ({ ...values, [name]: value }));
+  };
   const handleSbarClose = () => {
     setOpenSbar(false);
   };
+
+  useEffect(() => {
+    if (token) dispatch(currentUser(token));
+  }, [token]);
+
+  useEffect(() => {
+    if (auth.reqUser?.full_name) {
+      navigate("/");
+    }
+  }, [auth.reqUser]);
+
   return (
     <div className="bg-[#131419]">
       <div className="flex justify-center h-screen items-center b">

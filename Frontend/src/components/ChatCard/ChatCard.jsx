@@ -1,6 +1,6 @@
 const ChatCard = () => {
   return (
-    <div className="flex items-center justify-center py-2 group cursor-pointer bg-[#131313 ] rounded-md transition-all duration-300 transform hover:shadow-lg hover:bg-[#292a30]">
+    <div className="flex items-center justify-center py-2 px-2 group cursor-pointer bg-[#131313 ] rounded-md transition-all duration-300 transform hover:shadow-lg hover:bg-[#292a30]">
     <div className="w-[20%]">
         <img className="h-14 w-14 rounded-full" src="nigga.png" alt="" />
       </div>

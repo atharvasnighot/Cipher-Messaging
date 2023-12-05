@@ -1,8 +1,8 @@
 import { Alert, Button, Snackbar } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { register } from "./../../Redux/Auth/Action";
+import { useDispatch, useSelector } from "react-redux";
+import { currentUser, register } from "./../../Redux/Auth/Action";
 
 const SignUp = () => {
   const [inputData, setInputData] = useState({
@@ -13,6 +13,9 @@ const SignUp = () => {
   const [openSbar, setOpenSbar] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const auth = useSelector((store) => store);
+  const token = localStorage.getItem("token");
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setOpenSbar(true);
@@ -26,6 +29,16 @@ const SignUp = () => {
   const handleSbarClose = () => {
     setOpenSbar(false);
   };
+
+  useEffect(() => {
+    if (token) dispatch(currentUser(token));
+  }, [token]);
+
+  useEffect(() => {
+    if (auth.reqUser?.full_name) {
+      navigate("/");
+    }
+  }, [auth.reqUser]);
 
   return (
     <div className="bg-[#131419]">

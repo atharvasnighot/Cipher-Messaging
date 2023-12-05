@@ -12,12 +12,14 @@ import {
 } from "react-icons/bs";
 
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./HomePage.css";
 import ChatCard from "./../ChatCard/ChatCard";
 import MessageCard from "./../MessageCard/MessageCard";
 import Profile from "./../Profile/Profile";
 import CreateGroup from "../Group/CreateGroup";
+import { useDispatch, useSelector } from "react-redux";
+import { currentUser, logoutAction } from "../../Redux/Auth/Action";
 
 const HomePage = () => {
   const [querys, setQuerys] = useState(null);
@@ -26,6 +28,9 @@ const HomePage = () => {
   const [isProfile, setProfile] = useState(false);
   const navigate = useNavigate();
   const [isGroup, setIsGroup] = useState(false);
+  const dispatch = useDispatch();
+  const { auth } = useSelector((store) => store);
+  const token = localStorage.getItem("token");
 
   const handleClickOnChatCard = () => {
     setCurrentChat(true);
@@ -52,6 +57,21 @@ const HomePage = () => {
     setAnchorEl(null);
   };
 
+  const handleLogout = () => {
+    dispatch(logoutAction());
+    navigate("/signup");
+  };
+
+  useEffect(() => {
+    dispatch(currentUser(token));
+  }, [token]);
+
+  useEffect(() => {
+    if (!auth.reqUser) {
+      navigate("/signup");
+    }
+  }, [auth.reqUser]);
+
   const handleSearch = () => {};
   return (
     <div className="relative ">
@@ -70,7 +90,7 @@ const HomePage = () => {
           {!isProfile && !isGroup && (
             <div className="w-full rounded-lg bg-[#131313] text-white">
               {/* home */}
-              <div className="flex justify-between items-center p-3 rounded-lg " >
+              <div className="flex justify-between items-center p-3 rounded-lg ">
                 <div
                   onClick={handleNavigate}
                   className="flex items-center space-x-3 "
@@ -80,7 +100,7 @@ const HomePage = () => {
                     src="luffy.jpeg"
                     alt=""
                   />
-                  <p>username</p>
+                  <p>{auth.reqUser?.full_name}</p>
                 </div>
                 <div className="space-x-3 text-2xl flex">
                   <TbCircleDashed
@@ -110,7 +130,7 @@ const HomePage = () => {
                       <MenuItem onClick={handleCreateGroup}>
                         Create Group
                       </MenuItem>
-                      <MenuItem onClick={handleClose}>Logout</MenuItem>
+                      <MenuItem onClick={handleLogout}>Logout</MenuItem>
                     </Menu>
                   </div>
                 </div>
@@ -136,7 +156,7 @@ const HomePage = () => {
               {/* {All user} */}
               <div className="bg-[#131313] px-3 max-h-[calc(100vh-200px)] overflow-y-auto">
                 {querys &&
-                  [1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1].map((item) => (
+                  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1].map((item) => (
                     <div onClick={handleClickOnChatCard}>
                       <ChatCard />
                     </div>
@@ -146,7 +166,7 @@ const HomePage = () => {
           )}
         </div>
         <div className="border-l-2 border-solid border-[#49494b]  h-full"></div>
-        {/* deafault whatsapp page */}
+        {/* default whatsapp page */}
         {!currentChat && (
           <div className=" max-w-max flex flex-col items-center justify-center h-full mx-20 text-white ">
             <div className=" max-w-[50%] text-center">
@@ -168,7 +188,7 @@ const HomePage = () => {
                     src="nigga.png"
                     alt=""
                   />
-                  <p>username</p>
+                  <p>{auth.reqUser?.full_name}</p>
                 </div>
                 <div className="py-3 flex space-x-4 items-center px-3">
                   <AiOutlineSearch />
@@ -189,14 +209,14 @@ const HomePage = () => {
               </div>
             </div>
             {/* Footer Part */}
-            <div className="footer bg-[#131313] absolute bottom-0 w-full py-3 text-2xl text-white rounded-lg ">
+            <div className="footer bg-black absolute bottom-0 w-full py-3 text-2xl text-white rounded-lg ">
               <div className="flex justify-between items-center px-5 relative">
                 <BsEmojiSmile className="cursor-pointer" />
                 <ImAttachment />
 
                 <input
                   type="text"
-                  className="py-2 outline-none border-none bg-black text-white pl-4 rounded-md w-[85%]"
+                  className="py-2 outline-none border-none bg-[#131313] text-white pl-4 rounded-md w-[85%]"
                   onChange={(e) => setContent(e.target.value)}
                   placeholder="Type Message"
                   value={content}
