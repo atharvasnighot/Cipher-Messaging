@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Signin = () => {
-  const [inputData, setInputData] = useState({ email: "", password: "" });
+  const [inputData, setInputData] = useState({ email: "", password: "",});
   const [openSbar, setOpenSbar] = useState(false);
   const navigate = useNavigate();
   const handleSubmit = (e) => {
@@ -18,7 +18,7 @@ const Signin = () => {
     <div className="bg-[#131419]">
       <div className="flex justify-center h-screen items-center b">
         <div
-          className="w-[30%] p-10 bg-black rounded-md "
+          className="min-w-[30%] p-10 bg-black rounded-md "
           style={{
             boxShadow:
               "-15px -15px 20px  rgba(255, 255, 255, 0.05), 5px 5px 15px rgba(0, 0, 0, 0.5)",
@@ -38,9 +38,10 @@ const Signin = () => {
               </div>
               <p className="mb-2 text-xl text-[#fffcfc]">Email</p>
               <input
-                placeholder="  Enter email address..."
+                placeholder="Enter email address..."
                 type="text"
-                className="py-2 border-gray-500 w-full rounded-md border transition duration-300 ease-in-out hover:border-blue-700 focus:outline-none hover:outline-thin focus:outline-thin bg-black"
+                name="email"
+                className="py-2 px-2 text-white border-gray-500 w-full rounded-md border transition duration-300 ease-in-out hover:border-blue-700 focus:outline-none hover:outline-thin focus:outline-thin bg-black"
                 onChange={handleChange}
                 value={inputData.email}
               />
@@ -49,9 +50,10 @@ const Signin = () => {
             <div>
               <p className="mb-2 text-xl text-[#fffcfc]">Password</p>
               <input
-                placeholder="  Enter your password"
-                type="text"
-                className="py-2 border-gray-500 w-full rounded-md border transition duration-300 ease-in-out hover:border-blue-700 focus:outline-none hover:outline-thin focus:outline-thin bg-black"
+                placeholder="Enter your password"
+                type="password"
+                name="password"
+                className="py-2 px-2 text-white border-gray-500 w-full rounded-md border transition duration-300 ease-in-out hover:border-blue-700 focus:outline-none hover:outline-thin focus:outline-thin bg-black"
                 onChange={handleChange}
                 value={inputData.password}
               />

@@ -1,6 +1,8 @@
 import { Alert, Button, Snackbar } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { register } from "./../../Redux/Auth/Action";
 
 const SignUp = () => {
   const [inputData, setInputData] = useState({
@@ -10,11 +12,17 @@ const SignUp = () => {
   });
   const [openSbar, setOpenSbar] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const handleSubmit = (e) => {
     e.preventDefault();
     setOpenSbar(true);
+    console.log(inputData);
+    dispatch(register(inputData));
   };
-  const handleChange = () => {};
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setInputData((values) => ({ ...values, [name]: value }));
+  };
   const handleSbarClose = () => {
     setOpenSbar(false);
   };
@@ -24,7 +32,7 @@ const SignUp = () => {
       <div>
         <div className="flex flex-col justify-center items-center min-h-screen">
           <div
-            className="w-[30%] p-10 bg-black rounded-md "
+            className="min-w-[30%] p-10 bg-black rounded-md "
             style={{
               boxShadow:
                 "-15px -15px 20px  rgba(255, 255, 255, 0.05), 5px 5px 15px rgba(0, 0, 0, 0.5)",
@@ -44,10 +52,10 @@ const SignUp = () => {
                 </div>
                 <p className="mb-2 text-xl text-[#fffcfc]">User Name</p>
                 <input
-                  placeholder="  Enter username"
+                  placeholder="Enter username"
                   name="full_name"
                   type="text"
-                  className="py-2 border-gray-500 w-full rounded-md border transition duration-300 ease-in-out hover:border-blue-700 focus:outline-none hover:outline-thin focus:outline-thin bg-black"
+                  className="py-2 px-2 border-gray-500 text-white w-full rounded-md border transition duration-300 ease-in-out hover:border-blue-700 focus:outline-none hover:outline-thin focus:outline-thin bg-black"
                   onChange={(e) => handleChange(e)}
                   value={inputData.full_name}
                 />
@@ -55,10 +63,10 @@ const SignUp = () => {
               <div>
                 <p className="mb-2 text-xl text-[#fffcfc]">Email</p>
                 <input
-                  placeholder="  Enter email"
-                  name="full_name"
+                  placeholder="Enter email"
+                  name="email"
                   type="text"
-                  className="py-2 border-gray-500 w-full rounded-md border transition duration-300 ease-in-out hover:border-blue-700 focus:outline-none hover:outline-thin focus:outline-thin bg-black"
+                  className="py-2 px-2  text-white border-gray-500 w-full rounded-md border transition duration-300 ease-in-out hover:border-blue-700 focus:outline-none hover:outline-thin focus:outline-thin bg-black"
                   onChange={(e) => handleChange(e)}
                   value={inputData.email}
                 />
@@ -66,11 +74,10 @@ const SignUp = () => {
               <div>
                 <p className="mb-2 text-xl text-[#fffcfc]">Password</p>
                 <input
-                  placeholder=" Enter your password"
-                  name="full_name"
-                  type="text"
-                  className="py-2 border-gray-500 w-full rounded-md border transition duration-300 ease-in-out hover:border-blue-700 focus:outline-none hover:outline-thin focus:outline-thin bg-black"
-                  style={{ color: "blue" }}
+                  placeholder="Enter your password"
+                  name="password"
+                  type="password"
+                  className="py-2 px-2 text-white border-gray-500 w-full rounded-md border transition duration-300 ease-in-out hover:border-blue-700 focus:outline-none hover:outline-thin focus:outline-thin bg-black"
                   onChange={(e) => handleChange(e)}
                   value={inputData.password}
                 />
