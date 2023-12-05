@@ -18,7 +18,7 @@ const Profile = ({handleCloseOpenProfile}) => {
   };
 
   return (
-    <div className="w-full h-full bg-white rounded-md">
+    <div className="w-full h-full bg-[#1d1e21] rounded-md">
       <div className="flex items-center rounded-md space-x-10 bg-[#3e7bd2] text-white pt-16 px-10 pb-6 relative">
         <BsArrowLeft
           className="cursor-pointer text-4xl absolute top-4 left-4"

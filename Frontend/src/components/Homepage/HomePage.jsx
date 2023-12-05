@@ -55,9 +55,9 @@ const HomePage = () => {
   const handleSearch = () => {};
   return (
     <div className="relative ">
-      <div className=" w-full py-14 bg-[#4ca3eb] "></div>
-      <div className="flex bg-[#f0f2f5] h-[93vh] absolute top-[4vh] w-[98vw] left-[1vw] rounded-lg">
-        <div className="left w-[30%] bg-white h-full rounded-lg">
+      <div className=" w-full py-14 bg-[#232424] "></div>
+      <div className="flex bg-[#131313] h-[93vh] absolute top-[4vh] w-[98vw] left-[1vw] rounded-lg">
+        <div className="left w-[30%] bg-[#131313] h-full rounded-lg">
           {/* profile */}
           {isGroup && <CreateGroup />}
           {isProfile && (
@@ -68,9 +68,9 @@ const HomePage = () => {
           )}
 
           {!isProfile && !isGroup && (
-            <div className="w-full rounded-lg bg-[#ced2d8]">
+            <div className="w-full rounded-lg bg-[#131313] text-white">
               {/* home */}
-              <div className="flex justify-between items-center p-3 rounded-lg">
+              <div className="flex justify-between items-center p-3 rounded-lg " >
                 <div
                   onClick={handleNavigate}
                   className="flex items-center space-x-3 "
@@ -115,10 +115,10 @@ const HomePage = () => {
                   </div>
                 </div>
               </div>
-
-              <div className="relative flex justify-center items-center bg-white py-4 px-3">
+              {/* <div className="border-b-2 border-solid border-[#49494b] h-full"></div> */}
+              <div className="relative flex justify-center items-center bg-[#131313] py-4 px-3">
                 <input
-                  className="outline-none bg-slate-200 rounded-md border-b-2 border-white focus:border-blue-700 w-[93%] pl-9 py-2"
+                  className="outline-none bg-[#202128] rounded-md border-b-0 focus:border-blue-700 w-[93%] pl-9 py-2"
                   type="text"
                   placeholder="Search or Start new Chat"
                   onChange={(e) => {
@@ -134,11 +134,10 @@ const HomePage = () => {
                 </div>
               </div>
               {/* {All user} */}
-              <div className="bg-white px-3 max-h-[calc(100vh-200px)] overflow-y-auto">
+              <div className="bg-[#131313] px-3 max-h-[calc(100vh-200px)] overflow-y-auto">
                 {querys &&
-                  [1, 1, 1, 1].map((item) => (
+                  [1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1].map((item) => (
                     <div onClick={handleClickOnChatCard}>
-                      <hr />
                       <ChatCard />
                     </div>
                   ))}
@@ -146,13 +145,13 @@ const HomePage = () => {
             </div>
           )}
         </div>
-
+        <div className="border-l-2 border-solid border-[#49494b]  h-full"></div>
         {/* deafault whatsapp page */}
         {!currentChat && (
-          <div className="max-w-max flex flex-col items-center justify-center h-full mx-20 ">
+          <div className=" max-w-max flex flex-col items-center justify-center h-full mx-20 text-white ">
             <div className=" max-w-[50%] text-center">
               <img className="opacity-70 mx-auto " src="cipher.png" alt="" />
-              <h1 className="text-4xl text-gray-800 ">Cipher Messaging</h1>
+              <h1 className="text-4xl text-gray-400 ">Cipher Messaging</h1>
               <p className="my-9 text-xl">Send and recieve messages </p>
             </div>
           </div>
@@ -161,7 +160,7 @@ const HomePage = () => {
         {/* Message part */}
         {currentChat && (
           <div className="w-[70%] relative ">
-            <div className="header absolute top-0 w-full bg-[#f0f2f5] rounded-lg">
+            <div className="header absolute top-0 w-full bg-[#131313] text-white rounded-lg">
               <div className="flex justify-between rounded-lg ">
                 <div className="py-3 space-x-4 flex items-center px-3 ">
                   <img
@@ -179,8 +178,8 @@ const HomePage = () => {
             </div>
 
             {/* message section */}
-            <div className="px-10 h-[85vh] overflow-y-auto bg-slate-100 rounded-lg">
-              <div className="space-y-1 flex flex-col justify-center border mt-20 py-2">
+            <div className="px-10 h-[85vh] overflow-y-auto bg-[#080809] rounded-lg">
+              <div className="space-y-1 flex flex-col justify-center mt-20 py-2">
                 {[1, 1, 1, 1, 1, 1].map((item, i) => (
                   <MessageCard
                     isReqUserMessage={i % 2 === 0}
@@ -190,14 +189,14 @@ const HomePage = () => {
               </div>
             </div>
             {/* Footer Part */}
-            <div className="footer bg-[#f0f2f5] absolute bottom-0 w-full py-3 text-2xl rounded-lg ">
+            <div className="footer bg-[#131313] absolute bottom-0 w-full py-3 text-2xl text-white rounded-lg ">
               <div className="flex justify-between items-center px-5 relative">
                 <BsEmojiSmile className="cursor-pointer" />
                 <ImAttachment />
 
                 <input
                   type="text"
-                  className="py-2 outline-none border-none bg-white pl-4 rounded-md w-[85%]"
+                  className="py-2 outline-none border-none bg-black text-white pl-4 rounded-md w-[85%]"
                   onChange={(e) => setContent(e.target.value)}
                   placeholder="Type Message"
                   value={content}
