@@ -6,6 +6,7 @@ import { currentUser, login } from "../../Redux/Auth/Action";
 
 const Signin = () => {
   const [inputData, setInputData] = useState({ email: "", password: "",});
+  
   const [openSbar, setOpenSbar] = useState(false);
   const navigate = useNavigate();
   const dispatch=useDispatch();

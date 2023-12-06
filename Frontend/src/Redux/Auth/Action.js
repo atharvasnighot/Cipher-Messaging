@@ -15,15 +15,16 @@ export const register = (data) => async (dispatch) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body:JSON.stringify(data),
+      body: JSON.stringify(data),
     });
     const resData = await res.json();
-    if (resData.jwt)localStorage.setItem("token", resData.jwt);
+    if (resData.jwt) localStorage.setItem("token", resData.jwt);
     console.log("register ", resData);
     dispatch({ type: REGISTER, payload: resData });
   } catch (error) {
+    console.log("catch error: ",error)
   }
-};
+}
 
 export const login = (data) => async (dispatch) => {
   try {
@@ -35,14 +36,16 @@ export const login = (data) => async (dispatch) => {
       body: JSON.stringify(data),
     });
     const resData = await res.json();
-    console.log("register ", resData);
-    if (resData.jwt)localStorage.setItem("token", resData.jwt);
+    console.log("login ", resData);
+    if (resData.jwt) localStorage.setItem("token", resData.jwt);
     dispatch({ type: LOGIN, payload: resData });
-  } catch (error) {}
-};
+  } catch (error) {
+    console.log("catch error: ",error)
+  }
+}
 
 export const currentUser = (token) => async (dispatch) => {
-  console.log("current user: ",token)
+  console.log("current user: ", token);
   try {
     const res = await fetch(`${BASE_API_URL}/api/users/profile`, {
       method: "GET",
@@ -72,7 +75,7 @@ export const searchUser = (data) => async (dispatch) => {
       }
     );
     const resData = await res.json();
-    console.log("register ", resData);
+    console.log("search:  ", resData);
     dispatch({ type: SEARCH_USER, payload: resData });
   } catch (error) {
     console.log("catch error ", error);
@@ -88,15 +91,15 @@ export const updateUser = (data) => async (dispatch) => {
       },
     });
     const resData = await res.json();
-    console.log("register ", resData);
+    console.log("updateuser ", resData);
     dispatch({ type: UPDATE_USER, payload: resData });
   } catch (error) {
     console.log("catch error ", error);
   }
 };
 
-export const logoutAction=()=>async(dispatch)=>{
+export const logoutAction = () => async (dispatch) => {
   localStorage.removeItem("token");
-  dispatch({type:LOGOUT,payload:null})
-  dispatch({type:REQ_USER,payload:null})
-}
+  dispatch({ type: LOGOUT, payload: null });
+  dispatch({ type: REQ_USER, payload: null });
+};

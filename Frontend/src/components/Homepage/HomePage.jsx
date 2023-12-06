@@ -29,7 +29,7 @@ const HomePage = () => {
   const navigate = useNavigate();
   const [isGroup, setIsGroup] = useState(false);
   const dispatch = useDispatch();
-  const { auth } = useSelector((store) => store);
+  const { auth } = useSelector(store => store);
   const token = localStorage.getItem("token");
 
   const handleClickOnChatCard = () => {

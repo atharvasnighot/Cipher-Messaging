@@ -13,13 +13,14 @@ const SignUp = () => {
   const [openSbar, setOpenSbar] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const auth = useSelector((store) => store);
+  const {auth }= useSelector(store => store);
   const token = localStorage.getItem("token");
 
+  console.log(("current user",auth.reqUser))
   const handleSubmit = (e) => {
     e.preventDefault();
     setOpenSbar(true);
-    console.log(inputData);
+    console.log("handle Submit :",inputData);
     dispatch(register(inputData));
   };
   const handleChange = (e) => {
