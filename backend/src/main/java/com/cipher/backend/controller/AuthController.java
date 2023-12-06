@@ -1,7 +1,6 @@
 package com.cipher.backend.controller;
 
 import com.cipher.backend.config.TokenProvider;
-import com.cipher.backend.exception.UserException;
 import com.cipher.backend.model.User;
 import com.cipher.backend.repository.UserRepository;
 import com.cipher.backend.request.LoginRequest;
@@ -37,15 +36,15 @@ public class AuthController {
     @Autowired
     private CustomUserService customUserService;
 
-    @PostMapping("/signup")
-    public ResponseEntity<AuthResponse> createUserHandler(@RequestBody User user) throws UserException {
+    @PostMapping(value = "/signup", produces = "application/json")
+    public ResponseEntity<AuthResponse> createUserHandler(@RequestBody User user) throws Exception {
         String email = user.getEmail();
         String fullName = user.getFullName();
         String password = user.getPassword();
 
         User isUser = userRepository.findByEmail(email);
         if (isUser != null)
-            throw new UserException("Email Id already registered");
+            throw new Exception("Email Id already registered");
 
         User createdUser = new User();
         createdUser.setEmail(email);
@@ -56,8 +55,11 @@ public class AuthController {
         Authentication authentication = new UsernamePasswordAuthenticationToken(email, password);
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = tokenProvider.generateToken(authentication);
-        AuthResponse response = new AuthResponse(jwt, true);
-
+        AuthResponse response = AuthResponse.builder()
+                .jwt(jwt)
+                .isAuth(true)
+                .build();
+        System.out.println(response.getJwt().toString());
         System.out.println("Email Registered");
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
