@@ -6,7 +6,7 @@ import { currentUser, register } from "./../../Redux/Auth/Action";
 
 const SignUp = () => {
   const [inputData, setInputData] = useState({
-    full_name: "",
+    fullName: "",
     email: "",
     password: "",
   });
@@ -33,13 +33,13 @@ const SignUp = () => {
 
   useEffect(() => {
     if (token) dispatch(currentUser(token));
-  }, [token]);
+  }, [dispatch, token]);
 
   useEffect(() => {
-    if (auth.reqUser?.full_name) {
+    if (auth.reqUser?.fullName) {
       navigate("/");
     }
-  }, [auth.reqUser]);
+  }, [auth.reqUser, navigate]);
 
   return (
     <div className="bg-[#131419]">
@@ -67,11 +67,11 @@ const SignUp = () => {
                 <p className="mb-2 text-xl text-[#fffcfc]">User Name</p>
                 <input
                   placeholder="Enter username"
-                  name="full_name"
+                  name="fullName"
                   type="text"
                   className="py-2 px-2 border-gray-500 text-white w-full rounded-md border transition duration-300 ease-in-out hover:border-blue-700 focus:outline-none hover:outline-thin focus:outline-thin bg-black"
                   onChange={(e) => handleChange(e)}
-                  value={inputData.full_name}
+                  value={inputData.fullName}
                 />
               </div>
               <div>
