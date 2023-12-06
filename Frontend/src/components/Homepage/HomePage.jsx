@@ -60,18 +60,18 @@ const HomePage = () => {
 
   const handleLogout = () => {
     dispatch(logoutAction());
-    navigate("/signup");
+    navigate("/signin");
   };
 
   useEffect(() => {
     dispatch(currentUser(token));
-  }, [token]);
+  }, [dispatch, token]);
 
   useEffect(() => {
     if (!auth.reqUser) {
-      navigate("/signup");
+      navigate("/signin");
     }
-  }, [auth.reqUser]);
+  }, [auth.reqUser, navigate]);
 
   const handleSearch = () => {};
   return (
@@ -101,7 +101,7 @@ const HomePage = () => {
                     src="luffy.jpeg"
                     alt=""
                   />
-                  <p>{auth.reqUser?.full_name}</p>
+                  <p>{auth.reqUser?.fullName}</p>
                 </div>
                 <div className="space-x-3 text-2xl flex">
                   <TbCircleDashed
@@ -189,7 +189,7 @@ const HomePage = () => {
                     src="nigga.png"
                     alt=""
                   />
-                  <p>{auth.reqUser?.full_name}</p>
+                  <p>{auth.reqUser?.fullName}</p>
                 </div>
                 <div className="py-3 flex space-x-4 items-center px-3">
                   <AiOutlineSearch />

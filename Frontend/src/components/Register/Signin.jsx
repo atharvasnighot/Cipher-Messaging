@@ -10,13 +10,16 @@ const Signin = () => {
   const [openSbar, setOpenSbar] = useState(false);
   const navigate = useNavigate();
   const dispatch=useDispatch();
-  const auth = useSelector((store) => store);
+  const { auth } = useSelector(store => store);
   const token = localStorage.getItem("token");
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setOpenSbar(true);
+    console.log("handle Submit :",inputData);
     dispatch(login(inputData))
   };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setInputData((values) => ({ ...values, [name]: value }));
@@ -27,13 +30,13 @@ const Signin = () => {
 
   useEffect(() => {
     if (token) dispatch(currentUser(token));
-  }, [token]);
+  }, [dispatch, token]);
 
   useEffect(() => {
     if (auth.reqUser?.fullName) {
       navigate("/");
     }
-  }, [auth.reqUser]);
+  }, [auth.reqUser, navigate]);
 
   return (
     <div className="bg-[#131419]">
