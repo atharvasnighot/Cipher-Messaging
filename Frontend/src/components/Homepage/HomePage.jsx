@@ -30,7 +30,7 @@ const HomePage = () => {
   const navigate = useNavigate();
   const [isGroup, setIsGroup] = useState(false);
   const dispatch = useDispatch();
-  const { auth } = useSelector(store => store);
+  const { auth } = useSelector((store) => store);
   const token = localStorage.getItem("token");
 
   const handleClickOnChatCard = () => {
@@ -179,9 +179,11 @@ const HomePage = () => {
         )}
 
         {/* Message part */}
+
         {currentChat && (
           <div className="w-[70%] relative  bg-black rounded-lg">
-            <div className="header absolute top-0 w-full bg-[#131313] text-white rounded-lg">
+            {/* header */}
+            <div className="header absolute w-full bg-[#131313] text-white rounded-lg z-10">
               <div className="flex justify-between rounded-lg ">
                 <div className="py-3 space-x-4 flex items-center px-3 ">
                   <img
@@ -189,7 +191,7 @@ const HomePage = () => {
                     src="nigga.png"
                     alt=""
                   />
-                  <p>{auth.reqUser?.fullName}</p>
+                  <p>username</p>
                 </div>
                 <div className="py-3 flex space-x-4 items-center px-3">
                   <AiOutlineSearch />
@@ -199,23 +201,28 @@ const HomePage = () => {
             </div>
 
             {/* message section */}
-            <div className="px-10 h-[85vh] overflow-y-auto rounded-lg relative ">
-      {/* Render Particles component as the background */}
-      <Particles className="absolute inset-0 z-0" />
-      <div className="rounded-lg relative z-10 ">
 
-      {/* Render your content on top of the Particles component */}
-        <div className="space-y-1 flex flex-col justify-center mt-20 py-2">
-          {[1, 1, 1, 1, 1, 1].map((item, i) => (
-            <MessageCard
-              key={i} // Don't forget to add a unique key when using map
-              isReqUserMessage={i % 2 === 0}
-              content={"message"}
-            />
-          ))}
-        </div>
-      </div>
-    </div>
+            <div className="px-6 mt-[75px] h-[74vh] overflow-y-auto rounded-lg relative ">
+              <div className="rounded-lg  relative z-10 h-full ">
+                <div className="space-y-1 flex flex-col justify-center py-2">
+                  {[
+                    1,
+                    1,
+                    1,
+                    1,
+                  
+                  ].map((item, i) => (
+                    <MessageCard
+                      key={i} // Don't forget to add a unique key when using map
+                      isReqUserMessage={i % 2 === 0}
+                      content={"message"}
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <Particles className="absolute inset-0 z-0" />
             {/* Footer Part */}
             <div className="footer bg-black absolute bottom-0 w-full py-3 text-2xl text-white rounded-lg ">
               <div className="flex justify-between items-center px-5 relative">
