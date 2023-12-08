@@ -3,21 +3,46 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { currentUser, login } from "../../Redux/Auth/Action";
+// import Particles from "../Homepage/Particles";
+
+import { z } from "zod";
+
+const SignInSchema = z.object({
+  email: z.string().email("Invalid email format"),
+  password: z.string().min(6, "Password must be at least 6 characters long"),
+});
 
 const Signin = () => {
-  const [inputData, setInputData] = useState({ email: "", password: "",});
-  
+  const [inputData, setInputData] = useState({ email: "", password: "" });
+
   const [openSbar, setOpenSbar] = useState(false);
   const navigate = useNavigate();
-  const dispatch=useDispatch();
-  const { auth } = useSelector(store => store);
+  const dispatch = useDispatch();
+  const { auth } = useSelector((store) => store);
   const token = localStorage.getItem("token");
+
+  const [errors, setErrors] = useState({});
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setOpenSbar(true);
-    console.log("handle Submit :",inputData);
-    dispatch(login(inputData))
+    console.log("handle Submit :", inputData);
+    
+    try {
+      SignInSchema.parse(inputData);
+      dispatch(login(inputData));
+      setErrors({});
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        const errorMap = {};
+        error.errors.forEach((err) => {
+          if (err.path) {
+            errorMap[err.path.join(".")] = err.message;
+          }
+        });
+        setErrors(errorMap);
+      }
+    }
   };
 
   const handleChange = (e) => {
@@ -39,7 +64,7 @@ const Signin = () => {
   }, [auth.reqUser, navigate]);
 
   return (
-    <div className="bg-[#131419]">
+    <div className="relative bg-[#131313]">
       <div className="flex justify-center h-screen items-center b">
         <div
           className="min-w-[30%] p-10 bg-black rounded-md "
@@ -69,6 +94,9 @@ const Signin = () => {
                 onChange={handleChange}
                 value={inputData.email}
               />
+              {errors.email && (
+                <div className="text-red-600">{errors.email}</div>
+              )}
             </div>
 
             <div>
@@ -81,6 +109,9 @@ const Signin = () => {
                 onChange={handleChange}
                 value={inputData.password}
               />
+              {errors.password && (
+                <div className="text-red-600">{errors.password}</div>
+              )}
             </div>
             <div className=" w-[50%] mx-auto">
               <Button

@@ -4,6 +4,7 @@ import { AiOutlineSearch } from "react-icons/ai";
 import { ImAttachment } from "react-icons/im";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import Fade from "@mui/material/Fade";
 import {
   BsEmojiSmile,
   BsFilter,
@@ -39,7 +40,7 @@ const HomePage = () => {
 
   const handleNavigate = () => {
     // navigate("/profile")
-    setProfile(true);
+    setProfile(true); 
   };
   const handleCreateNewMessage = () => {};
   const handleCreateGroup = () => {
@@ -111,32 +112,66 @@ const HomePage = () => {
                   <BiCommentDetail />
                   <div>
                     <BsThreeDotsVertical
-                      id="basic-button"
-                      aria-controls={open ? "basic-menu" : undefined}
+                      id="fade-button"
+                      aria-controls={open ? "fade-menu" : undefined}
                       aria-haspopup="true"
                       aria-expanded={open ? "true" : undefined}
                       onClick={handleClick}
                     />
 
                     <Menu
-                      id="basic-menu"
+                      id="fade-menu"
                       anchorEl={anchorEl}
                       open={open}
                       onClose={handleClose}
-                      MenuListProps={{
-                        "aria-labelledby": "basic-button",
+                      TransitionComponent={Fade}
+                      PaperProps={{
+                        style: {
+                          backgroundColor: "#333",
+                        },
                       }}
                     >
-                      <MenuItem onClick={handleNavigate}>Profile</MenuItem>
-                      <MenuItem onClick={handleCreateGroup}>
+                      <MenuItem
+                        onClick={handleNavigate}
+                        sx={{
+                          "&:hover": {
+                            backgroundColor: "#555",
+                          },
+                          color: "white",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        Profile
+                      </MenuItem>
+                      <MenuItem
+                        onClick={handleCreateGroup}
+                        sx={{
+                          "&:hover": {
+                            backgroundColor: "#555",
+                          },
+                          color: "white",
+                          fontWeight: "bold",
+                        }}
+                      >
                         Create Group
                       </MenuItem>
-                      <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                      <MenuItem
+                        onClick={handleLogout}
+                        sx={{
+                          "&:hover": {
+                            backgroundColor: "#555",
+                          },
+                          color: "white",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        Logout
+                      </MenuItem>
                     </Menu>
                   </div>
                 </div>
               </div>
-              {/* <div className="border-b-2 border-solid border-[#49494b] h-full"></div> */}
+  
               <div className="relative flex justify-center items-center bg-[#131313] py-4 px-3">
                 <input
                   className="outline-none bg-[#202128] rounded-md border-b-0 focus:border-blue-700 w-[93%] pl-9 py-2"
@@ -205,13 +240,7 @@ const HomePage = () => {
             <div className="px-6 mt-[75px] h-[74vh] overflow-y-auto rounded-lg relative ">
               <div className="rounded-lg  relative z-10 h-full ">
                 <div className="space-y-1 flex flex-col justify-center py-2">
-                  {[
-                    1,
-                    1,
-                    1,
-                    1,
-                  
-                  ].map((item, i) => (
+                  {[1, 1, 1, 1].map((item, i) => (
                     <MessageCard
                       key={i} // Don't forget to add a unique key when using map
                       isReqUserMessage={i % 2 === 0}

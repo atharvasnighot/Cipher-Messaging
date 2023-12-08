@@ -4,6 +4,14 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { currentUser, register } from "./../../Redux/Auth/Action";
 
+import { z } from 'zod';
+
+const SignUpSchema = z.object({
+  email: z.string().email('Invalid email format'),
+  password: z.string().min(6, 'Password must be at least 6 characters long'),
+});
+
+
 const SignUp = () => {
   const [inputData, setInputData] = useState({
     fullName: "",
@@ -15,13 +23,28 @@ const SignUp = () => {
   const dispatch = useDispatch();
   const {auth }= useSelector(store => store);
   const token = localStorage.getItem("token");
+  const [errors, setErrors] = useState({});
 
   console.log(("current user",auth.reqUser))
   const handleSubmit = (e) => {
     e.preventDefault();
     setOpenSbar(true);
     console.log("handle Submit :",inputData);
-    dispatch(register(inputData));
+    try {
+      SignUpSchema.parse(inputData); 
+      dispatch(register(inputData));
+      setErrors({});
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        const errorMap = {};
+        error.errors.forEach((err) => {
+          if (err.path) {
+            errorMap[err.path.join(".")] = err.message;
+          }
+        });
+        setErrors(errorMap);
+      }
+    }
   };
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -84,6 +107,9 @@ const SignUp = () => {
                   onChange={(e) => handleChange(e)}
                   value={inputData.email}
                 />
+                  {errors.email && (
+                <div className="text-red-600">{errors.email}</div>
+              )}
               </div>
               <div>
                 <p className="mb-2 text-xl text-[#fffcfc]">Password</p>
@@ -95,6 +121,9 @@ const SignUp = () => {
                   onChange={(e) => handleChange(e)}
                   value={inputData.password}
                 />
+                 {errors.password && (
+                <div className="text-red-600">{errors.password}</div>
+              )}
               </div>
               <div className=" w-[50%] mx-auto">
                 <Button

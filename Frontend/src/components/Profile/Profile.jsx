@@ -14,12 +14,12 @@ const Profile = ({handleCloseOpenProfile}) => {
   };
 
   const handleChange = (e) => {
-    setUsername(e.target.value);
+    setUsername(e.target.value);   
   };
 
   return (
-    <div className="w-full h-full bg-[#1d1e21] rounded-md">
-      <div className="flex items-center rounded-md space-x-10 bg-[#3e7bd2] text-white pt-16 px-10 pb-6 relative">
+    <div className="w-full h-full bg-black rounded-md">
+      <div className="flex items-center rounded-md space-x-10 bg-[#131313] text-white pt-16 px-10 pb-6 relative">
         <BsArrowLeft
           className="cursor-pointer text-4xl absolute top-4 left-4"
           onClick={handleCloseOpenProfile}
@@ -40,7 +40,7 @@ const Profile = ({handleCloseOpenProfile}) => {
 
       {/* name section */}
       <div>
-        <div className="bg-[#cbced7] p-3 ml-6 w-[90%] rounded-md">
+        <div className="bg-[#2a2b2e] p-3 ml-6 w-[90%] rounded-md text-white">
           <p className="py-3 text-xl">Your Name</p>
 
           {!flag && (
@@ -51,10 +51,10 @@ const Profile = ({handleCloseOpenProfile}) => {
           )}
 
           {flag && (
-            <div className="w-full flex justify-between items-center py-2">
+            <div className="w-full flex justify-between text-white items-center py-2">
               <input
                 onChange={handleChange}
-                className="w-[80%] outline-none border-b-2 border-blue-700 p-2"
+                className="w-[80%] outline-none bg-black border-b-2 border-blue-700 p-2"
                 type="text"
                 placeholder="Enter your name"
               />
