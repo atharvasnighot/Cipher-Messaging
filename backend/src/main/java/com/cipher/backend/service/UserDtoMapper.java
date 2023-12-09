@@ -14,7 +14,6 @@ public class UserDtoMapper {
         userDto.setId(user.getId());
         userDto.setFull_name(user.getFull_name());
         userDto.setEmail(user.getEmail());
-        userDto.setProfile_picture(user.getProfile_picture());
         return userDto;
     }
 
