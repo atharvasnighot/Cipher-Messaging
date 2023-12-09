@@ -36,10 +36,10 @@ public class AuthController {
     @Autowired
     private CustomUserService customUserService;
 
-    @PostMapping(value = "/signup")
+    @PostMapping(value = "/signup", produces = "application/json")
     public ResponseEntity<AuthResponse> createUserHandler(@RequestBody User user) throws Exception {
         String email = user.getEmail();
-        String fullName = user.getFull_name();
+        String fullName = user.getFullName();
         String password = user.getPassword();
 
         User isUser = userRepository.findByEmail(email);
@@ -48,7 +48,7 @@ public class AuthController {
 
         User createdUser = new User();
         createdUser.setEmail(email);
-        createdUser.setFull_name(fullName);
+        createdUser.setFullName(fullName);
         createdUser.setPassword(passwordEncoder.encode(password));
         userRepository.save(createdUser);
 
@@ -59,6 +59,7 @@ public class AuthController {
                 .jwt(jwt)
                 .isAuth(true)
                 .build();
+        System.out.println(response.getJwt().toString());
         System.out.println("Email Registered");
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }

@@ -42,15 +42,5 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 
-//    @GetMapping("/search")
-//    public ResponseEntity<HashSet<UserDto>> searchUsersByName(@RequestParam("name") String name){
-//        List<User> users = userService.searchUser(name);
-//        HashSet<User> userHashSet = new HashSet<>(users);
-//        HashSet<UserDto> userDtos = UserDtoMapper.toUserDtos(set);
-//
-//        return new ResponseEntity<>(userDtos, HttpStatus.ACCEPTED);
-//    }
-
-
 
 }

@@ -59,8 +59,8 @@ public class ChatServiceImplementation implements ChatService{
 
         Chat group = new Chat();
         group.setGroup(true);
-        group.setChat_image(request.getChat_image());
-        group.setChat_name(request.getChat_name());
+        group.setChatImage(request.getChatImage());
+        group.setChatName(request.getChatName());
         group.setCreatedBy(requestUser);
         group.getAdmins().add(requestUser);
 
@@ -95,7 +95,7 @@ public class ChatServiceImplementation implements ChatService{
         if (optionalChat.isPresent()){
             Chat chat = optionalChat.get();
             if (chat.getUsers().contains(requestUser)){
-                chat.setChat_name(groupName);
+                chat.setChatName(groupName);
                 return chatRepository.save(chat);
             }
             throw new UserException("You are not a member of this group");
