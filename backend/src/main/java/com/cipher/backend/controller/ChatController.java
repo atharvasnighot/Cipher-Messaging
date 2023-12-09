@@ -1,5 +1,4 @@
 package com.cipher.backend.controller;
-
 import com.cipher.backend.exception.ChatException;
 import com.cipher.backend.exception.UserException;
 import com.cipher.backend.model.Chat;

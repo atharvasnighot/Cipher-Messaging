@@ -11,8 +11,8 @@ import lombok.Setter;
 @AllArgsConstructor
 public class UpdateUserRequest {
 
-    private String fullName;
-    private String profilePicture;
+    private String full_name;
+    private String profile_picture;
 
 
 }
