@@ -40,7 +40,7 @@ const HomePage = () => {
 
   const handleNavigate = () => {
     // navigate("/profile")
-    setProfile(true); 
+    setProfile(true);
   };
   const handleCreateNewMessage = () => {};
   const handleCreateGroup = () => {
@@ -59,6 +59,9 @@ const HomePage = () => {
     setAnchorEl(null);
   };
 
+
+  //dimak kharab...................
+  
   const handleLogout = () => {
     dispatch(logoutAction());
     navigate("/signin");
@@ -171,7 +174,7 @@ const HomePage = () => {
                   </div>
                 </div>
               </div>
-  
+
               <div className="relative flex justify-center items-center bg-[#131313] py-4 px-3">
                 <input
                   className="outline-none bg-[#202128] rounded-md border-b-0 focus:border-blue-700 w-[93%] pl-9 py-2"
