@@ -18,9 +18,9 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    private String fullName;
+    private String full_name;
     private String email;
-    private String profilePicture;
+    private String profile_picture;
     private String password;
 
     @Override
