@@ -2,17 +2,14 @@ package com.cipher.backend.controller;
 
 import com.cipher.backend.exception.UserException;
 import com.cipher.backend.model.User;
-import com.cipher.backend.model.UserDto;
 import com.cipher.backend.request.UpdateUserRequest;
 import com.cipher.backend.response.ApiResponse;
-import com.cipher.backend.service.UserDtoMapper;
 import com.cipher.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashSet;
 import java.util.List;
 
 @RestController
@@ -45,14 +42,14 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 
-    @GetMapping("/search")
-    public ResponseEntity<HashSet<UserDto>> searchUsersByName(@RequestParam("name") String name){
-        List<User> users = userService.searchUser(name);
-        HashSet<User> userHashSet = new HashSet<>(users);
-        HashSet<UserDto> userDtos = UserDtoMapper.toUserDtos(userHashSet);
-
-        return new ResponseEntity<>(userDtos, HttpStatus.ACCEPTED);
-    }
+//    @GetMapping("/search")
+//    public ResponseEntity<HashSet<UserDto>> searchUsersByName(@RequestParam("name") String name){
+//        List<User> users = userService.searchUser(name);
+//        HashSet<User> userHashSet = new HashSet<>(users);
+//        HashSet<UserDto> userDtos = UserDtoMapper.toUserDtos(set);
+//
+//        return new ResponseEntity<>(userDtos, HttpStatus.ACCEPTED);
+//    }
 
 
 

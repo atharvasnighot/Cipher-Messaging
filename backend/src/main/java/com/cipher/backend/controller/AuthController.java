@@ -88,5 +88,6 @@ public class AuthController {
             throw new BadCredentialsException("Invalid Password or Username");
         }
         return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+
     }
 }
