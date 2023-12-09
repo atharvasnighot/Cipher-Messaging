@@ -32,14 +32,14 @@ export const createGroupChat = (chatData) => async (dispatch) => {
     });
 
     const data = await res.json();
-    console.log("create chat: ", data);
+    console.log("users chat: ", data);
     dispatch({ type: CREATE_GROUP, payload: data });
   } catch (error) {
     console.log("catch error", error);
   }
 };
 
-export const geyUsersChat = (chatData) => async (dispatch) => {
+export const getUsersChat = (chatData) => async (dispatch) => {
   try {
     const res = await fetch(`${BASE_API_URL}/api/chats/user`, {
       method: "GET",
