@@ -63,7 +63,6 @@ export const currentUser = (token) => async (dispatch) => {
 };
 
 export const searchUser = (data) => async (dispatch) => {
-  console.log("Search data :",data)
   try {
     const res = await fetch(
       `${BASE_API_URL}/api/users/search?name=${data.keyword}`,

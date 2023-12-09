@@ -11,6 +11,7 @@ import {
   BsMicFill,
   BsThreeDotsVertical,
 } from "react-icons/bs";
+
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "./HomePage.css";
@@ -19,10 +20,8 @@ import MessageCard from "./../MessageCard/MessageCard";
 import Profile from "./../Profile/Profile";
 import CreateGroup from "../Group/CreateGroup";
 import { useDispatch, useSelector } from "react-redux";
-import { currentUser, logoutAction, searchUser } from "../../Redux/Auth/Action";
+import { currentUser, logoutAction } from "../../Redux/Auth/Action";
 import Particles from "./Particles";
-import { createChat, getUsersChat } from './../../Redux/Chat/Action';
-import { chatReducer } from './../../Redux/Chat/Reducer';
 
 const HomePage = () => {
   const [querys, setQuerys] = useState(null);
@@ -32,13 +31,11 @@ const HomePage = () => {
   const navigate = useNavigate();
   const [isGroup, setIsGroup] = useState(false);
   const dispatch = useDispatch();
-  const { auth ,chat,message} = useSelector((store) => store);
+  const { auth } = useSelector((store) => store);
   const token = localStorage.getItem("token");
 
-  const handleClickOnChatCard = (userId) => {
-    // setCurrentChat(true);
-    dispatch(createChat({token,data:{userId}}))
-    setQuerys("")
+  const handleClickOnChatCard = () => {
+    setCurrentChat(true);
   };
 
   const handleNavigate = () => {
@@ -50,7 +47,6 @@ const HomePage = () => {
     setIsGroup(true);
   };
 
-  
   const handleCloseOpenProfile = () => {
     setProfile(false);
   };
@@ -68,11 +64,6 @@ const HomePage = () => {
     navigate("/signin");
   };
 
-  useEffect(()=>{
-    dispatch(getUsersChat({token}))
-  },[chat.createChat,chat.CreateGroup])
-
-
   useEffect(() => {
     dispatch(currentUser(token));
   }, [dispatch, token]);
@@ -83,10 +74,7 @@ const HomePage = () => {
     }
   }, [auth.reqUser, navigate]);
 
-  const handleSearch = (keyword) => {
-    dispatch(searchUser({keyword,token}))
-  };
-
+  const handleSearch = () => {};
   return (
     <div className="relative ">
       <div className=" w-full py-14 bg-[#232424] "></div>
@@ -114,7 +102,7 @@ const HomePage = () => {
                     src="luffy.jpeg"
                     alt=""
                   />
-                  <p>{auth.reqUser?.full_name}</p>
+                  <p>{auth.reqUser?.fullName}</p>
                 </div>
                 <div className="space-x-3 text-2xl flex">
                   <TbCircleDashed
@@ -204,58 +192,9 @@ const HomePage = () => {
               {/* {All user} */}
               <div className="bg-[#131313] px-3 max-h-[calc(100vh-200px)] overflow-y-auto">
                 {querys &&
-                 auth.searchUser?.map((item) => (
-                    <div onClick={handleClickOnChatCard(item.id)}>
-                    <ChatCard
-                        name={item.full_name}
-                        userImg={
-                          item.profile_picture||"luffy.jpeg"
-                        }
-                        />
-                    </div>
-                  ))}
-
-                {chat.chats.length>0 && !querys &&
-                 chat.chats?.map((item) => (
-                    <div onClick={handleClickOnChatCard(item.id)}>
-                     {
-                      item.isGroup?( 
-                        <ChatCard
-                        name={item.chat_name}
-                        userImg={
-                          item.chat_image||"luffy.jpeg"
-                        }
-                        />
-                      ):(
-                        <ChatCard 
-                          isChat={true}
-                          name={
-                            auth.reqUser?.id!==item.user[0].id
-                            ? item.users[0].full_name
-                            : item.users[1].full_name
-                          }
-                          userImg={
-                            auth.reqUser?.id!==item.user[0].id
-                            ? item.users[0].profile_picture ||"dummy.png"
-                            : item.users[1].profile_picture ||"dummy.png"
-                            
-                          }
-                          // notification={notifications.length}
-                          // isNotification={
-                          //   notification[0]?.chat?.id === item.id
-                          // }
-                          // message={
-                          //   (item.id===
-                          //     messages[messages.length-1]?.chat?.id &&
-                          //     messages[messages.length-1]?.content) ||
-                          //     (item.id===notifications[0]?.chat?.id&&
-                          //       notification[0]?.content)
-                              
-                          // }
-
-                      />
-                      
-                 )}
+                  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1].map((item) => (
+                    <div onClick={handleClickOnChatCard}>
+                      <ChatCard />
                     </div>
                   ))}
               </div>
