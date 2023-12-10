@@ -22,14 +22,17 @@ public class Chat {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    private String chatName;
-    private String chatImage;
+    private String chat_name;
+    private String chat_image;
+
+    @Column(name = "is_group")
     private boolean isGroup;
 
     @ManyToMany
     private Set<User> admins = new HashSet<>();
 
     @ManyToOne
+    @JoinColumn(name = "created_by")
     private User createdBy;
 
     @ManyToMany

@@ -53,7 +53,7 @@ public class ChatController {
     public ResponseEntity<List<Chat>> findAllChatsByUserId(@RequestHeader("Authorization") String jwt) throws UserException {
 
         User requestUser = userService.findUserProfile(jwt);
-        List<Chat> chats = chatService.findAllChatByUserId(requestUser.getId());
+        List<Chat> chats = chatService.findAllChatsByUserId(requestUser.getId());
 
         return new ResponseEntity<>(chats, HttpStatus.OK);
     }

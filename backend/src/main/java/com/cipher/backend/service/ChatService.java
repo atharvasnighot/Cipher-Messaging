@@ -13,7 +13,7 @@ public interface ChatService {
 
     Chat findChatById(Integer chatId) throws ChatException;
 
-    List<Chat> findAllChatByUserId(Integer userId) throws UserException;
+    List<Chat> findAllChatsByUserId(Integer userId) throws UserException;
 
     Chat createGroup(GroupChatRequest request, User requestUser) throws UserException;
 

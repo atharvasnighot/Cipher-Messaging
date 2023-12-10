@@ -12,9 +12,9 @@ public class UserDtoMapper {
     public static UserDto toUserDto(User user) {
         UserDto userDto = new UserDto();
         userDto.setId(user.getId());
-        userDto.setFull_name(user.getFullName());
+        userDto.setFull_name(user.getFull_name());
         userDto.setEmail(user.getEmail());
-        userDto.setProfile_picture(user.getProfilePicture());
+        userDto.setProfile_picture(user.getProfile_picture());
         return userDto;
     }
 

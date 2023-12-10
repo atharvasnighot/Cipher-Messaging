@@ -43,14 +43,15 @@ public class ChatServiceImplementation implements ChatService{
         if (chat.isPresent())
             return chat.get();
 
+        System.out.println("CHAT NOT FOUND");
         throw new ChatException("Chat not found with id " + chatId);
     }
 
     @Override
-    public List<Chat> findAllChatByUserId(Integer userId) throws UserException {
+    public List<Chat> findAllChatsByUserId(Integer userId) throws UserException {
 
         User user = userService.findUserById(userId);
-        List<Chat> chats = chatRepository.findChatByUserId((userId));
+        List<Chat> chats = chatRepository.findChatByUserId(user.getId());
         return chats;
     }
 
@@ -59,8 +60,8 @@ public class ChatServiceImplementation implements ChatService{
 
         Chat group = new Chat();
         group.setGroup(true);
-        group.setChatImage(request.getChatImage());
-        group.setChatName(request.getChatName());
+        group.setChat_image(request.getChat_image());
+        group.setChat_name(request.getChat_name());
         group.setCreatedBy(requestUser);
         group.getAdmins().add(requestUser);
 
@@ -95,7 +96,7 @@ public class ChatServiceImplementation implements ChatService{
         if (optionalChat.isPresent()){
             Chat chat = optionalChat.get();
             if (chat.getUsers().contains(requestUser)){
-                chat.setChatName(groupName);
+                chat.setChat_name(groupName);
                 return chatRepository.save(chat);
             }
             throw new UserException("You are not a member of this group");
