@@ -58,6 +58,7 @@ public class ChatController {
         return new ResponseEntity<>(chats, HttpStatus.OK);
     }
 
+
     @PutMapping("/{chatId}/add/{userId}")
     public ResponseEntity<Chat> addUserToGroupHandler(@PathVariable Integer chatId, @PathVariable Integer userId, @RequestHeader("Authorization") String jwt) throws UserException, ChatException {
 

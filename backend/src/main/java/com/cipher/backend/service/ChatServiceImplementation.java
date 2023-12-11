@@ -49,11 +49,10 @@ public class ChatServiceImplementation implements ChatService{
 
     @Override
     public List<Chat> findAllChatsByUserId(Integer userId) throws UserException {
-
-        User user = userService.findUserById(userId);
-        List<Chat> chats = chatRepository.findChatByUserId(user.getId());
-        return chats;
+        System.out.println(userId);
+        return chatRepository.findChatByUserId(userId);
     }
+
 
     @Override
     public Chat createGroup(GroupChatRequest request, User requestUser) throws UserException {
