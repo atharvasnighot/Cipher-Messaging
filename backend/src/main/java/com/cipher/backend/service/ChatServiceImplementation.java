@@ -32,6 +32,7 @@ public class ChatServiceImplementation implements ChatService{
         chat.getUsers().add(user);
         chat.getUsers().add(requestUser);
         chat.setGroup(false);
+        chatRepository.save(chat);
 
         return chat;
     }
