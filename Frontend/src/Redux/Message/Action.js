@@ -14,7 +14,7 @@ export const createMessage = (messageData) => async (dispatch) => {
       });
 
       const data = await res.json();
-      console.log("create chat: ", data);
+      console.log("create message: ", data);
       dispatch({ type: CREATE_NEW_MESSAGE, payload: data });
     } catch (error) {
       console.log("catch error", error);
@@ -32,7 +32,7 @@ export const getAllMessage = (reqData) => async (dispatch) => {
       });
 
       const data = await res.json();
-      console.log("create chat: ", data);
+      console.log("get all msgs: ", data);
       dispatch({ type: GET_ALL_MESSAGE, payload: data });
     } catch (error) {
       console.log("catch error", error);
