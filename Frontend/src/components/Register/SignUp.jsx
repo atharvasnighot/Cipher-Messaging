@@ -14,7 +14,7 @@ const SignUpSchema = z.object({
 
 const SignUp = () => {
   const [inputData, setInputData] = useState({
-    fullName: "",
+    full_name: "",
     email: "",
     password: "",
   });
@@ -59,7 +59,7 @@ const SignUp = () => {
   }, [dispatch, token]);
 
   useEffect(() => {
-    if (auth.reqUser?.fullName) {
+    if (auth.reqUser?.full_name) {
       navigate("/");
     }
   }, [auth.reqUser, navigate]);
@@ -90,11 +90,11 @@ const SignUp = () => {
                 <p className="mb-2 text-xl text-[#fffcfc]">User Name</p>
                 <input
                   placeholder="Enter username"
-                  name="fullName"
+                  name="full_name"
                   type="text"
                   className="py-2 px-2 border-gray-500 text-white w-full rounded-md border transition duration-300 ease-in-out hover:border-blue-700 focus:outline-none hover:outline-thin focus:outline-thin bg-black"
                   onChange={(e) => handleChange(e)}
-                  value={inputData.fullName}
+                  value={inputData.full_name}
                 />
               </div>
               <div>

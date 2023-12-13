@@ -20,8 +20,10 @@ import MessageCard from "./../MessageCard/MessageCard";
 import Profile from "./../Profile/Profile";
 import CreateGroup from "../Group/CreateGroup";
 import { useDispatch, useSelector } from "react-redux";
-import { currentUser, logoutAction } from "../../Redux/Auth/Action";
+import { currentUser, logoutAction, searchUser } from "../../Redux/Auth/Action";
 import Particles from "./Particles";
+import { createChat, getUsersChat } from "./../../Redux/Chat/Action";
+import { createMessage, getAllMessage } from './../../Redux/Message/Action';
 
 const HomePage = () => {
   const [querys, setQuerys] = useState(null);
@@ -31,21 +33,36 @@ const HomePage = () => {
   const navigate = useNavigate();
   const [isGroup, setIsGroup] = useState(false);
   const dispatch = useDispatch();
-  const { auth } = useSelector((store) => store);
+  const { auth, chat, message } = useSelector((store) => store);
   const token = localStorage.getItem("token");
 
-  const handleClickOnChatCard = () => {
-    setCurrentChat(true);
+  const handleClickOnChatCard = (userId) => {
+    // setCurrentChat(userId);
+    // console.log(userId, "  ", token);
+    dispatch(createChat({ token, data: { userId } }));
+    setQuerys("");
   };
 
   const handleNavigate = () => {
     // navigate("/profile")
     setProfile(true);
   };
-  const handleCreateNewMessage = () => {};
+  const handleCreateNewMessage = () => {
+    dispatch(createMessage({token,data:{chatId:currentChat.id,content:content}}))
+  };
   const handleCreateGroup = () => {
     setIsGroup(true);
   };
+
+  useEffect(() => {
+    dispatch(getUsersChat({ token }));
+  }, [chat.createdChat, chat.createdGroup, dispatch, token]);
+
+  useEffect(()=>{
+    if(currentChat?.id)
+    dispatch(getAllMessage({chatId:currentChat.id,token}))
+  },[currentChat,message.newMessage ,dispatch, token])
+
 
   const handleCloseOpenProfile = () => {
     setProfile(false);
@@ -59,9 +76,8 @@ const HomePage = () => {
     setAnchorEl(null);
   };
 
-
   //dimak kharab...................
-  
+
   const handleLogout = () => {
     dispatch(logoutAction());
     navigate("/signin");
@@ -77,11 +93,18 @@ const HomePage = () => {
     }
   }, [auth.reqUser, navigate]);
 
-  const handleSearch = () => {};
+  const handleSearch = (keyword) => {
+    dispatch(searchUser({ keyword, token }));
+  };
+
+  const handleCurrentChat = (item) => {
+    setCurrentChat(item);
+  };
+
   return (
     <div className="relative ">
       <div className=" w-full py-14 bg-[#232424] "></div>
-      <div className="flex bg-[#131313] h-[93vh] absolute top-[4vh] w-[98vw] left-[1vw] rounded-lg">
+      <div className="flex bg-[#131313] h-[94vh] absolute top-[3vh] w-[98vw] left-[1vw] rounded-lg">
         <div className="left w-[30%] bg-[#131313] h-full rounded-lg">
           {/* profile */}
           {isGroup && <CreateGroup />}
@@ -105,7 +128,7 @@ const HomePage = () => {
                     src="luffy.jpeg"
                     alt=""
                   />
-                  <p>{auth.reqUser?.fullName}</p>
+                  <p>{auth.reqUser?.full_name}</p>
                 </div>
                 <div className="space-x-3 text-2xl flex">
                   <TbCircleDashed
@@ -195,16 +218,50 @@ const HomePage = () => {
               {/* {All user} */}
               <div className="bg-[#131313] px-3 max-h-[calc(100vh-200px)] overflow-y-auto">
                 {querys &&
-                  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1].map((item) => (
-                    <div onClick={handleClickOnChatCard}>
-                      <ChatCard />
+                  auth.searchUser?.map((item) => (
+                    <div
+                      key={item.id}
+                      onClick={() => handleClickOnChatCard(item.id)}
+                    >
+                      <ChatCard
+                        name={item.full_name}
+                        userImg={item.profile_picture || "dummyq.png"}
+                      />
+                    </div>
+                  ))}
+
+                {chat.chats.length > 0 &&
+                  !querys &&
+                  chat.chats?.map((item) => (
+                    <div key={item.id} onClick={() => handleCurrentChat(item)}>
+                      {item &&
+                        (item.isGroup ? (
+                          <ChatCard
+                            name={item.chat_name}
+                            userImg={item.chat_image || "dummyq.jpeg"}
+                          />
+                        ) : (
+                          <ChatCard
+                            isChat={true}
+                            name={
+                              auth.reqUser?.id !== item.users[0]?.id
+                                ? item.users[0].full_name
+                                : item.users[1].full_name
+                            }
+                            userImg={
+                              auth.reqUser.id !== item.users[0].id
+                                ? item.users[0].profile_picture || "dummyq.png"
+                                : item.users[1].profile_picture || "dummyq.png"
+                            }
+                          />
+                        ))}
                     </div>
                   ))}
               </div>
             </div>
           )}
         </div>
-        <div className="border-l-2 border-solid border-[#49494b]  h-full"></div>
+        <div className="border-l-2 border-solid border-[#49494b] h-full"></div>
         {/* default whatsapp page */}
         {!currentChat && (
           <div className=" max-w-max flex flex-col items-center justify-center h-full mx-20 text-white ">
@@ -226,10 +283,18 @@ const HomePage = () => {
                 <div className="py-3 space-x-4 flex items-center px-3 ">
                   <img
                     className="w-10 h-10 rounded-full"
-                    src="nigga.png"
+                    src={currentChat.isGroup? currentChat.chat_image:
+                      (auth.reqUser.id !== currentChat.users[0].id
+                        ? currentChat.users[0].profile_picture || "dummyq.png"
+                        : currentChat.users[1].profile_picture || "dummyq.png")
+                    }
                     alt=""
                   />
-                  <p>username</p>
+                  <p>
+                    {currentChat.isGroup? currentChat.chat_name : (auth.reqUser?.id === currentChat.users[0].id
+                      ? currentChat.users[1].full_name
+                      : currentChat.users[0].full_name)}
+                  </p>
                 </div>
                 <div className="py-3 flex space-x-4 items-center px-3">
                   <AiOutlineSearch />
@@ -243,11 +308,11 @@ const HomePage = () => {
             <div className="px-6 mt-[75px] h-[74vh] overflow-y-auto rounded-lg relative ">
               <div className="rounded-lg  relative z-10 h-full ">
                 <div className="space-y-1 flex flex-col justify-center py-2">
-                  {[1, 1, 1, 1].map((item, i) => (
+                  {message.messages.length>0 && message.messages?.map((item, i) => (
                     <MessageCard
-                      key={i} // Don't forget to add a unique key when using map
-                      isReqUserMessage={i % 2 === 0}
-                      content={"message"}
+                      key={i} 
+                      isReqUserMessage={item.user.id!==auth.reqUser.id}
+                      content={item.content}
                     />
                   ))}
                 </div>

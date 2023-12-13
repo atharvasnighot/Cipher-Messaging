@@ -58,7 +58,7 @@ const Signin = () => {
   }, [dispatch, token]);
 
   useEffect(() => {
-    if (auth.reqUser?.fullName) {
+    if (auth.reqUser?.full_name) {
       navigate("/");
     }
   }, [auth.reqUser, navigate]);
