@@ -28,7 +28,7 @@ public class MessageServiceImplementation implements MessageService{
     private ChatService chatService;
 
     @Override
-    public Message sendMessage(SendMessageRequest request) throws UserException, UserException, ChatException {
+    public Message sendMessage(SendMessageRequest request) throws UserException, ChatException {
 
         User user = userService.findUserById(request.getUserId());
         Chat chat = chatService.findChatById(request.getChatId());
@@ -39,6 +39,7 @@ public class MessageServiceImplementation implements MessageService{
         message.setContent(request.getContent());
         message.setTimeStamp(LocalDateTime.now());
 
+        messageRepository.save(message);
         return message;
     }
 
