@@ -233,12 +233,13 @@ const HomePage = () => {
                 {chat.chats.length > 0 &&
                   !querys &&
                   chat.chats?.map((item) => (
+                      
                     <div key={item.id} onClick={() => handleCurrentChat(item)}>
                       {item &&
-                        (item.isGroup ? (
+                        (item.group ? (
                           <ChatCard
                             name={item.chat_name}
-                            userImg={item.chat_image || "dummyq.jpeg"}
+                            userImg={item.chat_image||"dummyq.png"}
                           />
                         ) : (
                           <ChatCard
@@ -257,6 +258,8 @@ const HomePage = () => {
                         ))}
                     </div>
                   ))}
+
+                  
               </div>
             </div>
           )}

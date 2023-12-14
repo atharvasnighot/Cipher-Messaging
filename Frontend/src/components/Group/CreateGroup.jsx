@@ -76,8 +76,7 @@ const CreateGroup = ({ setIsGroup }) => {
                   >
                     <ChatCard
                       userImg={item.profile_picture}
-                      name={item.full_name}
-                    />
+                      name={item.full_name}/>
                   </div>
                 ))}
             </div>
