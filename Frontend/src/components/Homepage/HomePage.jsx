@@ -107,7 +107,7 @@ const HomePage = () => {
       <div className="flex bg-[#131313] h-[94vh] absolute top-[3vh] w-[98vw] left-[1vw] rounded-lg">
         <div className="left w-[30%] bg-[#131313] h-full rounded-lg">
           {/* profile */}
-          {isGroup && <CreateGroup />}
+          {isGroup && <CreateGroup setIsGroup={setIsGroup} />}
           {isProfile && (
             <div className="w-full h-full">
               {" "}
@@ -125,7 +125,7 @@ const HomePage = () => {
                 >
                   <img
                     className="rounded-full w-10 h-10 cursor-pointer px-1 py-1"
-                    src="luffy.jpeg"
+                    src={auth.reqUser?.profile_picture ||"dummyq.png"}
                     alt=""
                   />
                   <p>{auth.reqUser?.full_name}</p>

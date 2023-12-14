@@ -85,11 +85,12 @@ export const searchUser = (data) => async (dispatch) => {
 export const updateUser = (data) => async (dispatch) => {
   try {
     const res = await fetch(`${BASE_API_URL}/api/users/update/${data.id}`, {
-      method: "GET",
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${data.token}`,
       },
+      body:JSON.stringify(data.data)
     });
     const resData = await res.json();
     console.log("updateuser ", resData);

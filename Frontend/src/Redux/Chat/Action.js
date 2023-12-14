@@ -28,7 +28,7 @@ export const createGroupChat = (chatData) => async (dispatch) => {
         "Content-Type": "application/json",
         Authorization: `Bearer ${chatData.token}`,
       },
-      body: JSON.stringify(chatData.data),
+      body: JSON.stringify(chatData.group),
     });
 
     const data = await res.json();
