@@ -3,8 +3,6 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { currentUser, login } from "../../Redux/Auth/Action";
-// import Particles from "../Homepage/Particles";
-
 import { z } from "zod";
 
 const SignInSchema = z.object({
@@ -14,26 +12,29 @@ const SignInSchema = z.object({
 
 const Signin = () => {
   const [inputData, setInputData] = useState({ email: "", password: "" });
-
-  const [openSbar, setOpenSbar] = useState(false);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [incorrectPassword, setIncorrectPassword] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { auth } = useSelector((store) => store);
   const token = localStorage.getItem("token");
-
   const [errors, setErrors] = useState({});
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setOpenSbar(true);
-    console.log("handle Submit :", inputData);
-    
+    setOpenSnackbar(true);
+
     try {
       SignInSchema.parse(inputData);
-      dispatch(login(inputData));
+      await dispatch(login(inputData));
       setErrors({});
+      setIncorrectPassword(false);
     } catch (error) {
-      if (error instanceof z.ZodError) {
+      console.error("Login Error:", error);
+
+      if (error.message === "Authentication failed") {
+        setIncorrectPassword(true);
+      } else if (error instanceof z.ZodError) {
         const errorMap = {};
         error.errors.forEach((err) => {
           if (err.path) {
@@ -49,8 +50,9 @@ const Signin = () => {
     const { name, value } = e.target;
     setInputData((values) => ({ ...values, [name]: value }));
   };
-  const handleSbarClose = () => {
-    setOpenSbar(false);
+
+  const handleSnackbarClose = () => {
+    setOpenSnackbar(false);
   };
 
   useEffect(() => {
@@ -148,16 +150,18 @@ const Signin = () => {
       </div>
 
       <Snackbar
-        open={openSbar}
-        autoHideDuration={3000}
-        onClose={handleSbarClose}
+        open={openSnackbar}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
       >
         <Alert
-          onClose={handleSbarClose}
-          severity="success"
+          onClose={handleSnackbarClose}
+          severity={incorrectPassword ? "error" : "success"}
           sx={{ width: "100%", fontSize: "1.1rem" }}
         >
-          Login Successfull!
+          {incorrectPassword
+            ? "Incorrect email or password. Please try again."
+            : "Login Successful!"}
         </Alert>
       </Snackbar>
     </div>

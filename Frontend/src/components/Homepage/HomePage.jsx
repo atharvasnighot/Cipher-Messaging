@@ -103,9 +103,9 @@ const HomePage = () => {
 
   return (
     <div className="relative ">
-      <div className=" w-full py-14 bg-[#232424] "></div>
+      <div className=" w-full py-14 bg-[#1fadc3] "></div>
       <div className="flex bg-[#131313] h-[94vh] absolute top-[3vh] w-[98vw] left-[1vw] rounded-lg">
-        <div className="left w-[30%] bg-[#131313] h-full rounded-lg">
+        <div className="left min-w-[30%] bg-[#131313] h-full rounded-lg">
           {/* profile */}
           {isGroup && <CreateGroup setIsGroup={setIsGroup} />}
           {isProfile && (
@@ -269,7 +269,7 @@ const HomePage = () => {
         {!currentChat && (
           <div className=" max-w-max flex flex-col items-center justify-center h-full mx-20 text-white ">
             <div className=" max-w-[50%] text-center">
-              <img className="opacity-70 mx-auto " src="cipher.png" alt="" />
+              <img className="mx-auto " src="cipher.png" alt="" />
               <h1 className="text-4xl text-gray-400 ">Cipher Messaging</h1>
               <p className="my-9 text-xl">Send and recieve messages </p>
             </div>

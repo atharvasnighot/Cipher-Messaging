@@ -65,7 +65,7 @@ const SignUp = () => {
   }, [auth.reqUser, navigate]);
 
   return (
-    <div className="bg-[#131419]">
+    <div className="bg-[#131313]">
       <div>
         <div className="flex flex-col justify-center items-center min-h-screen">
           <div
@@ -167,7 +167,7 @@ const SignUp = () => {
             severity="success"
             sx={{ width: "100%" }}
           >
-            Your Account has been successfully created!
+            Registeration Succesfull!
           </Alert>
         </Snackbar>
       </div>

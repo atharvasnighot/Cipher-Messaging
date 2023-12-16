@@ -15,7 +15,7 @@ const ChatCard = ({ userImg, name }) => {
         <div className="flex justify-between">
           <p>message...</p>
           <div className="flex space-x-2 items-center">
-            <p className="text-sm py-1 px-2 text-black font-bold bg-white rounded-full">1</p>
+            <p className="text-sm py-1 px-2 text-black font-bold bg-[#00ADB5] rounded-full">1</p>
           </div>
         </div>
       </div>

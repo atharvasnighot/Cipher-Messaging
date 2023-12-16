@@ -26,6 +26,7 @@ export const register = (data) => async (dispatch) => {
   }
 }
 
+// authActions.js or wherever your actions are defined
 export const login = (data) => async (dispatch) => {
   try {
     const res = await fetch(`${BASE_API_URL}/auth/signin`, {
@@ -37,12 +38,21 @@ export const login = (data) => async (dispatch) => {
     });
     const resData = await res.json();
     console.log("login ", resData);
-    if (resData.jwt) localStorage.setItem("token", resData.jwt);
-    dispatch({ type: LOGIN, payload: resData });
+
+    if (resData.jwt) {
+      localStorage.setItem("token", resData.jwt);
+      dispatch({ type: LOGIN, payload: resData });
+      return resData; // Return the response data
+    } else {
+      throw new Error("Authentication failed"); // Throw an error for failed authentication
+    }
   } catch (error) {
-    console.log("catch error: ",error)
+    console.error("catch error: ", error);
+    throw error; // Re-throw the error
   }
-}
+};
+
+
 
 export const currentUser = (token) => async (dispatch) => {
   console.log("current user: ", token);
