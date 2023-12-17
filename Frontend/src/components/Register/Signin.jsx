@@ -20,15 +20,19 @@ const Signin = () => {
   const token = localStorage.getItem("token");
   const [errors, setErrors] = useState({});
 
+  const [networkError, setNetworkError] = useState(false);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setOpenSnackbar(true);
 
     try {
       SignInSchema.parse(inputData);
-      await dispatch(login(inputData));
+      await dispatch(login(inputData, setNetworkError));
       setErrors({});
       setIncorrectPassword(false);
+      setNetworkError(false); // Reset network error state on successful login
+      setOpenSnackbar(false);
     } catch (error) {
       console.error("Login Error:", error);
 
@@ -42,6 +46,9 @@ const Signin = () => {
           }
         });
         setErrors(errorMap);
+      } else if (error.message === "Network error occurred") {
+        setNetworkError(true);
+        setOpenSnackbar(false);
       }
     }
   };
@@ -156,10 +163,14 @@ const Signin = () => {
       >
         <Alert
           onClose={handleSnackbarClose}
-          severity={incorrectPassword ? "error" : "success"}
+          severity={
+            incorrectPassword || networkError ? "error" : "success"
+          }
           sx={{ width: "100%", fontSize: "1.1rem" }}
         >
-          {incorrectPassword
+          {networkError
+            ? "Network error occurred. Please try again later."
+            : incorrectPassword
             ? "Incorrect email or password. Please try again."
             : "Login Successful!"}
         </Alert>
