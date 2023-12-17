@@ -26,7 +26,7 @@ export const register = (data) => async (dispatch) => {
   }
 }
 
-// authActions.js or wherever your actions are defined
+
 export const login = (data) => async (dispatch) => {
   try {
     const res = await fetch(`${BASE_API_URL}/auth/signin`, {
@@ -36,19 +36,34 @@ export const login = (data) => async (dispatch) => {
       },
       body: JSON.stringify(data),
     });
+
+    if (!res.ok) {
+      // Handle non-2xx HTTP responses
+      const errorData = await res.json();
+      console.error("Login Error:", errorData);
+      throw new Error("Authentication failed");
+    }
+
     const resData = await res.json();
     console.log("login ", resData);
 
     if (resData.jwt) {
       localStorage.setItem("token", resData.jwt);
       dispatch({ type: LOGIN, payload: resData });
-      return resData; // Return the response data
+      return resData;
     } else {
-      throw new Error("Authentication failed"); // Throw an error for failed authentication
+      throw new Error("Authentication failed");
     }
   } catch (error) {
     console.error("catch error: ", error);
-    throw error; // Re-throw the error
+
+    // Handle network errors
+    if (error instanceof TypeError && error.message.includes("NetworkError")) {
+      console.error("Network Error:", error);
+      throw new Error("Network error occurred");
+    }
+
+    throw error;
   }
 };
 
