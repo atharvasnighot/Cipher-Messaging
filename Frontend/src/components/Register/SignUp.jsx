@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { currentUser, register } from "./../../Redux/Auth/Action";
 
 import { z } from 'zod';
+import Particles from "../Homepage/Particles";
 
 const SignUpSchema = z.object({
   email: z.string().email('Invalid email format'),
@@ -65,11 +66,12 @@ const SignUp = () => {
   }, [auth.reqUser, navigate]);
 
   return (
-    <div className="bg-[#131313]">
-      <div>
-        <div className="flex flex-col justify-center items-center min-h-screen">
+    <>
+    <Particles className="absolute inset-0 z-10" />
+    <div className="relative bg-[#0a0a0a]">
+        <div className="flex justify-center items-center min-h-screen ">
           <div
-            className="min-w-[30%] p-10 bg-black rounded-md "
+            className="min-w-[30%] p-10 bg-black rounded-md  z-10 "
             style={{
               boxShadow:
                 "-15px -15px 20px  rgba(255, 255, 255, 0.05), 5px 5px 15px rgba(0, 0, 0, 0.5)",
@@ -171,7 +173,7 @@ const SignUp = () => {
           </Alert>
         </Snackbar>
       </div>
-    </div>
+    </>
   );
 };
 

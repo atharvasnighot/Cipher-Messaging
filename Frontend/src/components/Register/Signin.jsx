@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { currentUser, login } from "../../Redux/Auth/Action";
 import { z } from "zod";
+import Particles from './../Homepage/Particles';
 
 const SignInSchema = z.object({
   email: z.string().email("Invalid email format"),
@@ -73,16 +74,19 @@ const Signin = () => {
   }, [auth.reqUser, navigate]);
 
   return (
-    <div className="relative bg-[#131313]">
-      <div className="flex justify-center h-screen items-center b">
+    <>
+    <Particles className="absolute inset-0 z-10" />
+    <div className="relative bg-[#0a0a0a]">
+      <div className="flex justify-center h-screen items-center ">
         <div
-          className="min-w-[30%] p-10 bg-black rounded-md "
+          className="min-w-[30%] p-10 bg-black rounded-md  z-10"
           style={{
             boxShadow:
               "-15px -15px 20px  rgba(255, 255, 255, 0.05), 5px 5px 15px rgba(0, 0, 0, 0.5)",
           }}
         >
           <form onSubmit={handleSubmit} className="space-y-5 ">
+ 
             <div>
               <div className="flex justify-center mb-3">
                 <img
@@ -176,6 +180,7 @@ const Signin = () => {
         </Alert>
       </Snackbar>
     </div>
+    </>
   );
 };
 
