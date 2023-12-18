@@ -57,6 +57,7 @@ const Signin = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setInputData((values) => ({ ...values, [name]: value }));
+    
   };
 
   const handleSnackbarClose = () => {
@@ -126,7 +127,7 @@ const Signin = () => {
                 <div className="text-red-600">{errors.password}</div>
               )}
             </div>
-            <div className=" w-[50%] mx-auto">
+            <div className="w-[50%] mx-auto">
               <Button
                 type="submit"
                 sx={{
@@ -136,6 +137,8 @@ const Signin = () => {
                 }}
                 variant="outlined"
                 className="w-full"
+                disabled={!inputData.email || !inputData.password}  
+  
               >
                 Sign In
               </Button>
@@ -156,6 +159,7 @@ const Signin = () => {
               {" "}
               Sign up
             </Button>
+           
           </div>
         </div>
       </div>

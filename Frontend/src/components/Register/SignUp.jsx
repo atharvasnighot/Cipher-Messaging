@@ -137,6 +137,7 @@ const SignUp = () => {
                   }}
                   variant="outlined"
                   className="w-full"
+                  disabled={!inputData.full_name || !inputData.email || !inputData.password}  
                 >
                   Sign Up
                 </Button>
@@ -152,9 +153,11 @@ const SignUp = () => {
                   borderRadius: "40px",
                 }}
                 onClick={() => navigate("/signin")}
+                
               >
-                {" "}
+               
                 Sign In
+
               </Button>
             </div>
           </div>
