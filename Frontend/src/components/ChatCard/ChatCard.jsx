@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 
-const ChatCard = ({ userImg, name, timeStamp, onCardClick, active }) => {
+const ChatCard = ({ userImg, name, timeStamp, onCardClick, active, lastMessage }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   const handleMouseEnter = () => {
@@ -39,7 +39,7 @@ const ChatCard = ({ userImg, name, timeStamp, onCardClick, active }) => {
           <p className="text-sm">{timeStamp}</p>
         </div>
         <div className="flex justify-between">
-          <p>message...</p>
+          <p>{lastMessage}</p>
           <div className="flex space-x-2 items-center">
             <p className="text-sm py-1 px-2 text-black font-bold bg-[#00ADB5] rounded-full">
               1
