@@ -7,6 +7,7 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
+
 public class RealtimeChatController {
 
     private SimpMessagingTemplate simpMessagingTemplate;
