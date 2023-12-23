@@ -4,6 +4,7 @@ import { AiOutlineSearch } from "react-icons/ai";
 import { ImAttachment } from "react-icons/im";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import { Snackbar, Alert } from "@mui/material";
 import Fade from "@mui/material/Fade";
 import {
   BsEmojiSmile,
@@ -23,7 +24,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { currentUser, logoutAction, searchUser } from "../../Redux/Auth/Action";
 import Particles from "./Particles";
 import { createChat, getUsersChat } from "./../../Redux/Chat/Action";
-import { createMessage, getAllMessage } from './../../Redux/Message/Action';
+import { createMessage, getAllMessage } from "./../../Redux/Message/Action";
+import SockJS from "sockjs-client/dist/sockjs";
+import { over } from "stompjs";
+import { useMediaQuery } from "react-responsive";
 
 const HomePage = () => {
   const [querys, setQuerys] = useState(null);
@@ -48,7 +52,12 @@ const HomePage = () => {
     setProfile(true);
   };
   const handleCreateNewMessage = () => {
-    dispatch(createMessage({token,data:{chatId:currentChat.id,content:content}}))
+    dispatch(
+      createMessage({
+        token,
+        data: { chatId: currentChat.id, content: content },
+      })
+    );
   };
   const handleCreateGroup = () => {
     setIsGroup(true);
@@ -58,11 +67,10 @@ const HomePage = () => {
     dispatch(getUsersChat({ token }));
   }, [chat.createdChat, chat.createdGroup, dispatch, token]);
 
-  useEffect(()=>{
-    if(currentChat?.id)
-    dispatch(getAllMessage({chatId:currentChat.id,token}))
-  },[currentChat,message.newMessage ,dispatch, token])
-
+  useEffect(() => {
+    if (currentChat?.id)
+      dispatch(getAllMessage({ chatId: currentChat.id, token }));
+  }, [currentChat, message.newMessage, dispatch, token]);
 
   const handleCloseOpenProfile = () => {
     setProfile(false);
@@ -75,6 +83,81 @@ const HomePage = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  useEffect(() => {
+    if (auth.reqUser) {
+      setSnackbarMessage(`Welcome, ${auth.reqUser.full_name}!`);
+      setOpenSnackbar(true);
+    }
+  }, [auth.reqUser]);
+
+  const [stompCleint, setStompClient] = useState();
+  const [isConnect, setIsConnected] = useState(false);
+  const [messages, setMessages] = useState([]);
+
+  const connect = () => {
+    const sock = new SockJS("http://localhost:8080/ws");
+    const temp = over(sock);
+    setStompClient(temp);
+
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      X_XSRF_TOKEN: getCookie("XSRF_TOKEN"),
+    };
+
+    temp.connect(headers, onConnect, onError);
+  };
+
+  function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) {
+      return parts.pop().split(";").shift();
+    }
+  }
+
+  const onError = (error) => {
+    console.log("no error ", error);
+  };
+
+  const onConnect = () => {
+    setIsConnected(true);
+  };
+
+  useEffect(() => {
+    if (message.newMessage && stompCleint && isConnect) {
+      setMessages((prevMessages) => [...prevMessages, message.newMessage]);
+      stompCleint.send("/app/message", {}, JSON.stringify(message.newMessage));
+    }
+  }, [message.newMessage, stompCleint, isConnect]);
+
+  useEffect(() => {
+    connect();
+  }, []);
+
+  useEffect(() => {
+    setMessages(message.messages);
+  }, [message.messages]);
+
+  const onMessageRecieve = (payload) => {
+    console.log("received msg: ", JSON.parse(payload.body));
+    const recieveMessage = JSON.parse(payload.body);
+    setMessages((prevMessages) => [...prevMessages, recieveMessage]);
+  };
+
+  useEffect(() => {
+    if (isConnect && stompCleint && auth.reqUser && currentChat) {
+      const subscription = stompCleint.subscribe(
+        "/group/" + currentChat.id.toString,
+        onMessageRecieve
+      );
+
+      return () => {
+        subscription.unsubscribe();
+      };
+    }
+  }, [isConnect, stompCleint, auth.reqUser, currentChat]);
 
   //dimak kharab...................
 
@@ -101,11 +184,29 @@ const HomePage = () => {
     setCurrentChat(item);
   };
 
+  const [activeCard, setActiveCard] = useState(null);
+  const handleCardClick = (clickedName) => {
+    // Reset all cards
+    setActiveCard(null);
+    // Set the clicked card as active
+    setActiveCard(clickedName);
+  };
+
+  const isMobile = useMediaQuery({ maxWidth: 767 });
+
   return (
-    <div className="relative ">
-      <div className=" w-full py-14 bg-[#1fadc3] "></div>
-      <div className="flex bg-[#131313] h-[94vh] absolute top-[3vh] w-[98vw] left-[1vw] rounded-lg">
-        <div className="left min-w-[30%] bg-[#131313] h-full rounded-lg">
+    <div className={`relative ${isMobile ? "flex-col" : "flex"}`}>
+      <div className={`w-full py-14 bg-[#1fadc3]`}></div>
+      <div
+        className={`flex bg-[#131313] ${
+          isMobile ? "flex-col" : "h-[94vh]"
+        } absolute top-[3vh] w-[98vw] left-[1vw] rounded-lg`}
+      >
+        <div
+          className={`left ${
+            isMobile ? "w-full bg-[#131313] " : "w-[30%]"
+          } bg-[#131313] ${isMobile ? "h-full" : "h-full"} rounded-lg`}
+        >
           {/* profile */}
           {isGroup && <CreateGroup setIsGroup={setIsGroup} />}
           {isProfile && (
@@ -125,7 +226,7 @@ const HomePage = () => {
                 >
                   <img
                     className="rounded-full w-10 h-10 cursor-pointer px-1 py-1"
-                    src={auth.reqUser?.profile_picture ||"dummyq.png"}
+                    src={auth.reqUser?.profile_picture || "dummyq.png"}
                     alt=""
                   />
                   <p>{auth.reqUser?.full_name}</p>
@@ -226,6 +327,9 @@ const HomePage = () => {
                       <ChatCard
                         name={item.full_name}
                         userImg={item.profile_picture || "dummyq.png"}
+                        onCardClick={handleCardClick}
+                        active={chat.full_name === activeCard}
+                        // timeStamp={}
                       />
                     </div>
                   ))}
@@ -233,13 +337,14 @@ const HomePage = () => {
                 {chat.chats.length > 0 &&
                   !querys &&
                   chat.chats?.map((item) => (
-                      
                     <div key={item.id} onClick={() => handleCurrentChat(item)}>
                       {item &&
                         (item.group ? (
                           <ChatCard
                             name={item.chat_name}
-                            userImg={item.chat_image||"dummyq.png"}
+                            userImg={item.chat_image || "dummyq.png"}
+                            onCardClick={handleCardClick}
+                            active={chat.chat_name === activeCard}
                           />
                         ) : (
                           <ChatCard
@@ -254,20 +359,23 @@ const HomePage = () => {
                                 ? item.users[0].profile_picture || "dummyq.png"
                                 : item.users[1].profile_picture || "dummyq.png"
                             }
+                            onCardClick={handleCardClick}
+                            active={
+                              item.users[0].full_name === activeCard ||
+                              item.users[1].full_name === activeCard
+                            }
                           />
                         ))}
                     </div>
                   ))}
-
-                  
               </div>
             </div>
           )}
         </div>
-        <div className="border-l-2 border-solid border-[#49494b] h-full"></div>
+<div className="border-l-2 border-solid border-[#49494b] h-full"></div>
         {/* default whatsapp page */}
         {!currentChat && (
-          <div className=" max-w-max flex flex-col items-center justify-center h-full mx-20 text-white ">
+          <div className="hidden md:flex max-w-max flex-col items-center justify-center h-full mx-20 text-white">
             <div className=" max-w-[50%] text-center">
               <img className="mx-auto " src="cipher.png" alt="" />
               <h1 className="text-4xl text-gray-400 ">Cipher Messaging</h1>
@@ -279,24 +387,32 @@ const HomePage = () => {
         {/* Message part */}
 
         {currentChat && (
-          <div className="w-[70%] relative  bg-black rounded-lg">
+          <div
+            className={`relative ${
+              isMobile ? "w-full h-full" : "w-[70%]"
+            } bg-black rounded-lg`}
+          >
             {/* header */}
             <div className="header absolute w-full bg-[#131313] text-white rounded-lg z-10">
               <div className="flex justify-between rounded-lg ">
                 <div className="py-3 space-x-4 flex items-center px-3 ">
                   <img
                     className="w-10 h-10 rounded-full"
-                    src={currentChat.isGroup? currentChat.chat_image:
-                      (auth.reqUser.id !== currentChat.users[0].id
+                    src={
+                      currentChat.isGroup
+                        ? currentChat.chat_image
+                        : auth.reqUser.id !== currentChat.users[0].id
                         ? currentChat.users[0].profile_picture || "dummyq.png"
-                        : currentChat.users[1].profile_picture || "dummyq.png")
+                        : currentChat.users[1].profile_picture || "dummyq.png"
                     }
                     alt=""
                   />
                   <p>
-                    {currentChat.isGroup? currentChat.chat_name : (auth.reqUser?.id === currentChat.users[0].id
+                    {currentChat.isGroup
+                      ? currentChat.chat_name
+                      : auth.reqUser?.id === currentChat.users[0].id
                       ? currentChat.users[1].full_name
-                      : currentChat.users[0].full_name)}
+                      : currentChat.users[0].full_name}
                   </p>
                 </div>
                 <div className="py-3 flex space-x-4 items-center px-3">
@@ -311,13 +427,15 @@ const HomePage = () => {
             <div className="px-6 mt-[75px] h-[74vh] overflow-y-auto rounded-lg relative ">
               <div className="rounded-lg  relative z-10 h-full ">
                 <div className="space-y-1 flex flex-col justify-center py-2">
-                  {message.messages.length>0 && message.messages?.map((item, i) => (
-                    <MessageCard
-                      key={i} 
-                      isReqUserMessage={item.user.id!==auth.reqUser.id}
-                      content={item.content}
-                    />
-                  ))}
+                  {messages.length > 0 &&
+                    messages?.map((item, i) => (
+                      <MessageCard
+                        key={i}
+                        isReqUserMessage={item.user.id !== auth.reqUser.id}
+                        content={item.content}
+                        timeStamp={item.timeStamp}
+                      />
+                    ))}
                 </div>
               </div>
             </div>
@@ -348,6 +466,26 @@ const HomePage = () => {
           </div>
         )}
       </div>
+
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={3000}
+        onClose={() => setOpenSnackbar(false)}
+      >
+        <Alert
+          onClose={() => setOpenSnackbar(false)}
+          severity="success"
+          sx={{
+            width: "100%",
+            fontSize: "1.2rem",
+            backgroundColor: "#1fadc3", // Set the background color
+            color: "black", // Set the text color
+            border: "1px solid black  ", // Set the border color
+          }}
+        >
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </div>
   );
 };
