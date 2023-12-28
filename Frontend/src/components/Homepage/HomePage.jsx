@@ -29,17 +29,26 @@ import { createMessage, getAllMessage } from "./../../Redux/Message/Action";
 import SockJS from "sockjs-client/dist/sockjs";
 import { over } from "stompjs";
 import { useMediaQuery } from "react-responsive";
+import EmojiPicker from "emoji-picker-react";
+import { Theme } from "emoji-picker-react";
+import { EmojiStyle } from 'emoji-picker-react';
 
 const HomePage = () => {
   const [querys, setQuerys] = useState(null);
   const [currentChat, setCurrentChat] = useState(null);
   const [content, setContent] = useState("");
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [isProfile, setProfile] = useState(false);
   const [isGroup, setIsGroup] = useState(false);
   const { auth, chat, message } = useSelector((store) => store);
   const token = localStorage.getItem("token");
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const handleEmojiClick = (emojiObject) => {
+    console.log("emojiObject:", emojiObject);
+    setContent(content + emojiObject.emoji);
+  };
 
   const handleClickOnChatCard = (userId) => {
     // setCurrentChat(userId);
@@ -59,6 +68,7 @@ const HomePage = () => {
         data: { chatId: currentChat.id, content: content },
       })
     );
+    setContent("");
   };
   const handleCreateGroup = () => {
     setIsGroup(true);
@@ -191,15 +201,13 @@ const HomePage = () => {
     setActiveCard(clickedName);
   };
 
-
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
     if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [messages]);
-  
 
   const isMobile = useMediaQuery({ maxWidth: 767 });
 
@@ -341,14 +349,17 @@ const HomePage = () => {
                         active={chat.full_name === activeCard}
                         // timeStamp={}
                       />
-                    
                     </div>
                   ))}
 
                 {chat.chats.length > 0 &&
                   !querys &&
                   chat.chats?.map((item) => (
-                    <div key={item.id} onClick={() => handleCurrentChat(item)} className="mb-1">
+                    <div
+                      key={item.id}
+                      onClick={() => handleCurrentChat(item)}
+                      className="mb-1"
+                    >
                       {item &&
                         (item.group ? (
                           <ChatCard
@@ -357,7 +368,6 @@ const HomePage = () => {
                             onCardClick={handleCardClick}
                             active={chat.chat_name === activeCard}
                           />
-                          
                         ) : (
                           <ChatCard
                             isChat={true}
@@ -378,14 +388,13 @@ const HomePage = () => {
                             }
                           />
                         ))}
-                    
                     </div>
                   ))}
               </div>
             </div>
           )}
         </div>
-<div className="border-l-2 border-solid border-[#49494b] h-full"></div>
+        <div className="border-l-2 border-solid border-[#49494b] h-full"></div>
         {/* default whatsapp page */}
         {!currentChat && (
           <div className="hidden md:flex max-w-max flex-col items-center justify-center h-full mx-20 text-white">
@@ -449,7 +458,7 @@ const HomePage = () => {
                         timeStamp={item.timeStamp}
                       />
                     ))}
-                    <div ref={messagesEndRef} />
+                  <div ref={messagesEndRef} />
                 </div>
               </div>
             </div>
@@ -458,7 +467,15 @@ const HomePage = () => {
             {/* Footer Part */}
             <div className="footer bg-black absolute bottom-0 w-full py-3 text-2xl text-white rounded-lg z-10 ">
               <div className="flex justify-between items-center px-5 relative">
-                <BsEmojiSmile className="cursor-pointer" />
+                <div
+                  className={`cursor-pointer p-2 transition duration-300 ease-in-out hover:bg-[#292a30] active:bg-[#292a30] rounded-lg ${
+                    showEmojiPicker ? "bg-[#292a30]" : ""
+                  }`}
+                  onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+                >
+                  <BsEmojiSmile />
+                </div>
+
                 <ImAttachment />
 
                 <input
@@ -474,7 +491,27 @@ const HomePage = () => {
                     }
                   }}
                 />
-            {content ? <MdSend onClick={handleCreateNewMessage}  className="text-3xl"/> : <BsMicFill />}
+
+                {showEmojiPicker && (
+                  <div className="absolute top-[-500px]">
+                    <EmojiPicker
+                      onEmojiClick={handleEmojiClick}
+                      height={500}
+                      width={500}
+                      theme={Theme.DARK}
+                      emojiStyle={EmojiStyle.GOOGLE}
+                    />
+                  </div>
+                )}
+
+                {content ? (
+                  <MdSend
+                    onClick={handleCreateNewMessage}
+                    className="text-3xl"
+                  />
+                ) : (
+                  <BsMicFill />
+                )}
               </div>
             </div>
           </div>
@@ -494,7 +531,7 @@ const HomePage = () => {
             fontSize: "1.2rem",
             backgroundColor: "#1fadc3",
             color: "black",
-            border: "1px solid black  ", 
+            border: "1px solid black  ",
           }}
         >
           {snackbarMessage}
