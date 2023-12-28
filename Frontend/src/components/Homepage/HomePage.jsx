@@ -1,4 +1,5 @@
 import { TbCircleDashed } from "react-icons/tb";
+import { MdSend } from "react-icons/md";
 import { BiCommentDetail } from "react-icons/bi";
 import { AiOutlineSearch } from "react-icons/ai";
 import { ImAttachment } from "react-icons/im";
@@ -14,7 +15,7 @@ import {
 } from "react-icons/bs";
 
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./HomePage.css";
 import ChatCard from "./../ChatCard/ChatCard";
 import MessageCard from "./../MessageCard/MessageCard";
@@ -34,11 +35,11 @@ const HomePage = () => {
   const [currentChat, setCurrentChat] = useState(null);
   const [content, setContent] = useState("");
   const [isProfile, setProfile] = useState(false);
-  const navigate = useNavigate();
   const [isGroup, setIsGroup] = useState(false);
-  const dispatch = useDispatch();
   const { auth, chat, message } = useSelector((store) => store);
   const token = localStorage.getItem("token");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleClickOnChatCard = (userId) => {
     // setCurrentChat(userId);
@@ -159,7 +160,7 @@ const HomePage = () => {
     }
   }, [isConnect, stompCleint, auth.reqUser, currentChat]);
 
-  //dimak kharab...................
+  //dimak kharab.................
 
   const handleLogout = () => {
     dispatch(logoutAction());
@@ -186,11 +187,19 @@ const HomePage = () => {
 
   const [activeCard, setActiveCard] = useState(null);
   const handleCardClick = (clickedName) => {
-    // Reset all cards
     setActiveCard(null);
-    // Set the clicked card as active
     setActiveCard(clickedName);
   };
+
+
+  const messagesEndRef = useRef(null);
+
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages]);
+  
 
   const isMobile = useMediaQuery({ maxWidth: 767 });
 
@@ -199,8 +208,8 @@ const HomePage = () => {
       <div className={`w-full py-14 bg-[#1fadc3]`}></div>
       <div
         className={`flex bg-[#131313] ${
-          isMobile ? "flex-col" : "h-[94vh]"
-        } absolute top-[3vh] w-[98vw] left-[1vw] rounded-lg`}
+          isMobile ? "flex-col" : "h-[97vh]"
+        } absolute top-[2vh] w-[98vw] left-[1vw] rounded-lg`}
       >
         <div
           className={`left ${
@@ -229,7 +238,7 @@ const HomePage = () => {
                     src={auth.reqUser?.profile_picture || "dummyq.png"}
                     alt=""
                   />
-                  <p>{auth.reqUser?.full_name}</p>
+                  <p className="text-[18px]">{auth.reqUser?.full_name}</p>
                 </div>
                 <div className="space-x-3 text-2xl flex">
                   <TbCircleDashed
@@ -317,12 +326,13 @@ const HomePage = () => {
                 </div>
               </div>
               {/* {All user} */}
-              <div className="bg-[#131313] px-3 max-h-[calc(100vh-200px)] overflow-y-auto">
+              <div className="bg-[#131313] px-3 max-h-[calc(100vh-200px)] overflow-y-auto ">
                 {querys &&
                   auth.searchUser?.map((item) => (
                     <div
                       key={item.id}
                       onClick={() => handleClickOnChatCard(item.id)}
+                      className="mb-1"
                     >
                       <ChatCard
                         name={item.full_name}
@@ -331,13 +341,14 @@ const HomePage = () => {
                         active={chat.full_name === activeCard}
                         // timeStamp={}
                       />
+                    
                     </div>
                   ))}
 
                 {chat.chats.length > 0 &&
                   !querys &&
                   chat.chats?.map((item) => (
-                    <div key={item.id} onClick={() => handleCurrentChat(item)}>
+                    <div key={item.id} onClick={() => handleCurrentChat(item)} className="mb-1">
                       {item &&
                         (item.group ? (
                           <ChatCard
@@ -346,6 +357,7 @@ const HomePage = () => {
                             onCardClick={handleCardClick}
                             active={chat.chat_name === activeCard}
                           />
+                          
                         ) : (
                           <ChatCard
                             isChat={true}
@@ -366,6 +378,7 @@ const HomePage = () => {
                             }
                           />
                         ))}
+                    
                     </div>
                   ))}
               </div>
@@ -436,20 +449,21 @@ const HomePage = () => {
                         timeStamp={item.timeStamp}
                       />
                     ))}
+                    <div ref={messagesEndRef} />
                 </div>
               </div>
             </div>
 
             <Particles className="absolute inset-0 z-0" />
             {/* Footer Part */}
-            <div className="footer bg-black absolute bottom-0 w-full py-3 text-2xl text-white rounded-lg ">
+            <div className="footer bg-black absolute bottom-0 w-full py-3 text-2xl text-white rounded-lg z-10 ">
               <div className="flex justify-between items-center px-5 relative">
                 <BsEmojiSmile className="cursor-pointer" />
                 <ImAttachment />
 
                 <input
                   type="text"
-                  className="py-2 outline-none border-none bg-[#131313] text-white pl-4 rounded-md w-[85%]"
+                  className="py-2 outline-none border-none bg-[#131313] text-white pl-4 rounded-md w-[85%] z-10"
                   onChange={(e) => setContent(e.target.value)}
                   placeholder="Type Message"
                   value={content}
@@ -460,7 +474,7 @@ const HomePage = () => {
                     }
                   }}
                 />
-                <BsMicFill />
+            {content ? <MdSend onClick={handleCreateNewMessage}  className="text-3xl"/> : <BsMicFill />}
               </div>
             </div>
           </div>
@@ -478,9 +492,9 @@ const HomePage = () => {
           sx={{
             width: "100%",
             fontSize: "1.2rem",
-            backgroundColor: "#1fadc3", // Set the background color
-            color: "black", // Set the text color
-            border: "1px solid black  ", // Set the border color
+            backgroundColor: "#1fadc3",
+            color: "black",
+            border: "1px solid black  ", 
           }}
         >
           {snackbarMessage}
