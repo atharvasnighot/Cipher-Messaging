@@ -3,15 +3,16 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { currentUser, register } from "./../../Redux/Auth/Action";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
-import { z } from 'zod';
+import { z } from "zod";
 import Particles from "../Homepage/Particles";
 
 const SignUpSchema = z.object({
-  email: z.string().email('Invalid email format'),
-  password: z.string().min(6, 'Password must be at least 6 characters long'),
+  email: z.string().email("Invalid email format"),
+  password: z.string().min(6, "Password must be at least 6 characters long"),
 });
-
 
 const SignUp = () => {
   const [inputData, setInputData] = useState({
@@ -22,17 +23,21 @@ const SignUp = () => {
   const [openSbar, setOpenSbar] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const {auth }= useSelector(store => store);
+  const { auth } = useSelector((store) => store);
   const token = localStorage.getItem("token");
   const [errors, setErrors] = useState({});
+  const [passwordVisible, setPasswordVisible] = useState(false);
 
-  console.log(("current user",auth.reqUser))
+  const handlePasswordVisibilityToggle = () => {
+    setPasswordVisible(!passwordVisible);
+  };
+  console.log(("current user", auth.reqUser));
   const handleSubmit = (e) => {
     e.preventDefault();
     setOpenSbar(true);
-    console.log("handle Submit :",inputData);
+    console.log("handle Submit :", inputData);
     try {
-      SignUpSchema.parse(inputData); 
+      SignUpSchema.parse(inputData);
       dispatch(register(inputData));
       setErrors({});
     } catch (error) {
@@ -67,8 +72,8 @@ const SignUp = () => {
 
   return (
     <>
-    <Particles className="absolute inset-0 z-10" />
-    <div className="relative bg-[#0a0a0a]">
+      <Particles className="absolute inset-0 z-10" />
+      <div className="relative bg-[#0a0a0a]">
         <div className="flex justify-center items-center min-h-screen ">
           <div
             className="min-w-[30%] p-10 bg-black rounded-md  z-10 "
@@ -109,23 +114,34 @@ const SignUp = () => {
                   onChange={(e) => handleChange(e)}
                   value={inputData.email}
                 />
-                  {errors.email && (
-                <div className="text-red-600">{errors.email}</div>
-              )}
+                {errors.email && (
+                  <div className="text-red-600">{errors.email}</div>
+                )}
               </div>
-              <div>
+
+              <div className="relative">
                 <p className="mb-2 text-xl text-[#fffcfc]">Password</p>
                 <input
                   placeholder="Enter your password"
+                  type={passwordVisible ? "text" : "password"}
                   name="password"
-                  type="password"
-                  className="py-2 px-2 text-white border-gray-500 w-full rounded-md border transition duration-300 ease-in-out hover:border-blue-700 focus:outline-none hover:outline-thin focus:outline-thin bg-black"
-                  onChange={(e) => handleChange(e)}
+                  className="py-2 px-2 text-white border-gray-500 w-full rounded-md border transition duration-300 ease-in-out hover:border-blue-700 focus:outline-none hover:outline-thin focus:outline-thin bg-black pr-10"
+                  onChange={handleChange}
                   value={inputData.password}
                 />
-                 {errors.password && (
-                <div className="text-red-600">{errors.password}</div>
-              )}
+                <div
+                  className="absolute top-[55px] right-3 transform -translate-y-1/2 cursor-pointer"
+                  onClick={handlePasswordVisibilityToggle}
+                >
+                  {passwordVisible ? (
+                    <VisibilityIcon sx={{ color: "white" }} />
+                  ) : (
+                    <VisibilityOffIcon sx={{ color: "white" }} />
+                  )}
+                </div>
+                {errors.password && (
+                  <div className="text-red-600">{errors.password}</div>
+                )}
               </div>
               <div className=" w-[50%] mx-auto">
                 <Button
@@ -137,7 +153,11 @@ const SignUp = () => {
                   }}
                   variant="outlined"
                   className="w-full"
-                  disabled={!inputData.full_name || !inputData.email || !inputData.password}  
+                  disabled={
+                    !inputData.full_name ||
+                    !inputData.email ||
+                    !inputData.password
+                  }
                 >
                   Sign Up
                 </Button>
@@ -153,11 +173,8 @@ const SignUp = () => {
                   borderRadius: "40px",
                 }}
                 onClick={() => navigate("/signin")}
-                
               >
-               
                 Sign In
-
               </Button>
             </div>
           </div>

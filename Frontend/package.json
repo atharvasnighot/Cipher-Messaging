@@ -10,9 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@emotion/react": "^11.11.1",
+    "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
-    "@mui/material": "^5.14.20",
+    "@mui/icons-material": "^5.15.2",
+    "@mui/material": "^5.15.2",
     "emoji-picker-react": "^4.6.0",
     "net": "^1.0.2",
     "react": "^18.2.0",
