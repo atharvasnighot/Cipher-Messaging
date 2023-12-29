@@ -124,7 +124,7 @@ const HomePage = () => {
   const [stompCleint, setStompClient] = useState();
   const [isConnect, setIsConnected] = useState(false);
   const [messages, setMessages] = useState([]);
-  
+
   const connect = () => {
     const sock = new SockJS("http://localhost:8080/ws");
     const temp = over(sock);
@@ -536,9 +536,11 @@ const HomePage = () => {
                   placeholder="Type Message"
                   value={content}
                   onKeyPress={(e) => {
-                    if (e.key == "Enter") {
-                      handleCreateNewMessage();
-                      setContent("");
+                    if (e.key === "Enter") {
+                      if (content.trim() !== "") {
+                        handleCreateNewMessage();
+                        setContent("");
+                      }
                     }
                   }}
                 />
