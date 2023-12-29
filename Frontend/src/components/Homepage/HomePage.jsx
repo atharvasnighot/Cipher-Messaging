@@ -1,13 +1,14 @@
 import { TbCircleDashed } from "react-icons/tb";
 import { MdSend } from "react-icons/md";
 import { BiCommentDetail } from "react-icons/bi";
-import { AiOutlineSearch } from "react-icons/ai";
+import { AiOutlineClose, AiOutlineSearch } from "react-icons/ai";
 import { ImAttachment } from "react-icons/im";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { Snackbar, Alert } from "@mui/material";
 import Fade from "@mui/material/Fade";
 import {
+  BsArrowLeft,
   BsEmojiSmile,
   BsFilter,
   BsMicFill,
@@ -31,7 +32,7 @@ import { over } from "stompjs";
 import { useMediaQuery } from "react-responsive";
 import EmojiPicker from "emoji-picker-react";
 import { Theme } from "emoji-picker-react";
-import { EmojiStyle } from 'emoji-picker-react';
+import { EmojiStyle } from "emoji-picker-react";
 
 const HomePage = () => {
   const [querys, setQuerys] = useState(null);
@@ -44,17 +45,34 @@ const HomePage = () => {
   const token = localStorage.getItem("token");
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const handleEmojiClick = (emojiObject) => {
     console.log("emojiObject:", emojiObject);
     setContent(content + emojiObject.emoji);
   };
+  const [showSearch, setShowSearch] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const inputRef = useRef(null);
+
+  const handleSearchIconClick = () => {
+    setShowSearch((prevShowSearch) => !prevShowSearch);
+  };
+
+  useEffect(() => {
+    if (showSearch && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [showSearch]);
 
   const handleClickOnChatCard = (userId) => {
     // setCurrentChat(userId);
     // console.log(userId, "  ", token);
     dispatch(createChat({ token, data: { userId } }));
     setQuerys("");
+  };
+
+  const handleHome = () => {
+    setCurrentChat(false);
+    setActiveCard(null);
   };
 
   const handleNavigate = () => {
@@ -106,7 +124,7 @@ const HomePage = () => {
   const [stompCleint, setStompClient] = useState();
   const [isConnect, setIsConnected] = useState(false);
   const [messages, setMessages] = useState([]);
-
+  
   const connect = () => {
     const sock = new SockJS("http://localhost:8080/ws");
     const temp = over(sock);
@@ -418,6 +436,10 @@ const HomePage = () => {
             <div className="header absolute w-full bg-[#131313] text-white rounded-lg z-10">
               <div className="flex justify-between rounded-lg ">
                 <div className="py-3 space-x-4 flex items-center px-3 ">
+                  <BsArrowLeft
+                    className="text-xl cursor-pointer mr-0"
+                    onClick={handleHome}
+                  />
                   <img
                     className="w-10 h-10 rounded-full"
                     src={
@@ -438,8 +460,36 @@ const HomePage = () => {
                   </p>
                 </div>
                 <div className="py-3 flex space-x-4 items-center px-3">
-                  <AiOutlineSearch />
-                  <BsThreeDotsVertical />
+                  <div
+                    className={`cursor-pointer p-2 transition duration-300 ease-in-out hover:bg-[#292a30] active:bg-[#292a30] rounded-lg ${
+                      showSearch ? "bg-[#292a30]" : ""
+                    }`}
+                    onClick={handleSearchIconClick}
+                  >
+                    <AiOutlineSearch className="text-xl" />
+                  </div>
+                  {showSearch && (
+                    <div className="relative">
+                      <input
+                        ref={inputRef}
+                        className="py-2 bg-[#131313] outline-none border-blue-400 text-white pl-4 rounded-md w-[85%] z-10 pr-12"
+                        type="text"
+                        placeholder="Search messages"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                      />
+
+                      <div
+                        className="absolute top-1/2 transform -translate-y-1/2 right-4 cursor-pointer transition duration-300 ease-in-out hover:bg-[#292a30] active:bg-[#292a30] p-2 rounded-lg"
+                        onClick={() => {
+                          setShowSearch(false);
+                          setSearchTerm("");
+                        }}
+                      >
+                        <AiOutlineClose className="text-xl" />
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -456,6 +506,7 @@ const HomePage = () => {
                         isReqUserMessage={item.user.id !== auth.reqUser.id}
                         content={item.content}
                         timeStamp={item.timeStamp}
+                        searchTerm={searchTerm}
                       />
                     ))}
                   <div ref={messagesEndRef} />
@@ -501,6 +552,7 @@ const HomePage = () => {
                       theme={Theme.DARK}
                       emojiStyle={EmojiStyle.GOOGLE}
                     />
+                    {console.log("EmojiStyle:", EmojiStyle)}
                   </div>
                 )}
 
