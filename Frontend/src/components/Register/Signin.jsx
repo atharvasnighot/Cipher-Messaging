@@ -33,17 +33,16 @@ const Signin = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setOpenSnackbar(true);
-
+  
     try {
       SignInSchema.parse(inputData);
       await dispatch(login(inputData, setNetworkError));
       setErrors({});
       setIncorrectPassword(false);
-      setNetworkError(false); // Reset network error state on successful login
-      setOpenSnackbar(false);
+      setNetworkError(false);
     } catch (error) {
       console.error("Login Error:", error);
-
+  
       if (error.message === "Authentication failed") {
         setIncorrectPassword(true);
       } else if (error instanceof z.ZodError) {
@@ -56,10 +55,13 @@ const Signin = () => {
         setErrors(errorMap);
       } else if (error.message === "Network error occurred") {
         setNetworkError(true);
-        setOpenSnackbar(false);
       }
+    } finally {
+      // Move setOpenSnackbar(false) outside the try-catch block
+      setOpenSnackbar(false);
     }
   };
+    
 
   const handleChange = (e) => {
     const { name, value } = e.target;

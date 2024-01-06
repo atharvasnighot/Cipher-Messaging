@@ -3,6 +3,8 @@ import { BsArrowLeft, BsCheck2, BsPencil } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUser } from "../../Redux/Auth/Action";
 import { CircularProgress } from "@mui/material";
+import PropTypes from 'prop-types';
+
 
 const Profile = ({ handleCloseOpenProfile }) => {
   const [flag, setFlag] = useState(false);
@@ -23,6 +25,7 @@ const Profile = ({ handleCloseOpenProfile }) => {
       token: localStorage.getItem("token"),
       data: { full_name: username },
     };
+    console.log("Update User Data:", data); // Add this line
     dispatch(updateUser(data));
   };
 
@@ -131,6 +134,9 @@ const Profile = ({ handleCloseOpenProfile }) => {
       </div> */}
     </div>
   );
+};
+Profile.propTypes = {
+  handleCloseOpenProfile: PropTypes.func.isRequired,
 };
 
 export default Profile;

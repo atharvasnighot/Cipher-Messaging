@@ -33,14 +33,17 @@ import { useMediaQuery } from "react-responsive";
 import EmojiPicker from "emoji-picker-react";
 import { Theme } from "emoji-picker-react";
 import { EmojiStyle } from "emoji-picker-react";
+import ChatCardSkeleton from "../ChatCard/ChatCardSkeleton";
 
 const HomePage = () => {
+  const [loading, setLoading] = useState(true);
   const [querys, setQuerys] = useState(null);
   const [currentChat, setCurrentChat] = useState(null);
   const [content, setContent] = useState("");
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [isProfile, setProfile] = useState(false);
   const [isGroup, setIsGroup] = useState(false);
+  const [messages, setMessages] = useState([]);
   const { auth, chat, message } = useSelector((store) => store);
   const token = localStorage.getItem("token");
   const dispatch = useDispatch();
@@ -53,10 +56,25 @@ const HomePage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const inputRef = useRef(null);
 
+  const [lastMessages, setLastMessages] = useState({});
+  useEffect(() => {
+    const fetchLastMessages = async () => {
+      const newLastMessages = {};
+      for (const item of chat.chats) {
+        newLastMessages[item.id] =
+          item.id === messages[messages.length - 1]?.chat?.id &&
+          messages[messages.length - 1]?.content;
+      }
+      setLastMessages(newLastMessages);
+    };
+    fetchLastMessages();
+  }, [messages, chat.chats]);
+
   const handleSearchIconClick = () => {
     setShowSearch((prevShowSearch) => !prevShowSearch);
   };
 
+  //for cursor on searchbar
   useEffect(() => {
     if (showSearch && inputRef.current) {
       inputRef.current.focus();
@@ -93,7 +111,18 @@ const HomePage = () => {
   };
 
   useEffect(() => {
-    dispatch(getUsersChat({ token }));
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        await dispatch(getUsersChat({ token }));
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        setLoading(false);
+      }
+    };
+
+    fetchData();
   }, [chat.createdChat, chat.createdGroup, dispatch, token]);
 
   useEffect(() => {
@@ -123,7 +152,6 @@ const HomePage = () => {
 
   const [stompCleint, setStompClient] = useState();
   const [isConnect, setIsConnected] = useState(false);
-  const [messages, setMessages] = useState([]);
 
   const connect = () => {
     const sock = new SockJS("http://localhost:8080/ws");
@@ -234,12 +262,12 @@ const HomePage = () => {
       <div className={`w-full py-14 bg-[#1fadc3]`}></div>
       <div
         className={`flex bg-[#131313] ${
-          isMobile ? "flex-col" : "h-[97vh]"
+          isMobile ? "flex-col" : "h-[96vh]"
         } absolute top-[2vh] w-[98vw] left-[1vw] rounded-lg`}
       >
         <div
           className={`left ${
-            isMobile ? "w-full bg-[#131313] " : "w-[30%]"
+            isMobile ? "w-full bg-[#131313] " : "min-w-[30%]"
           } bg-[#131313] ${isMobile ? "h-full" : "h-full"} rounded-lg`}
         >
           {/* profile */}
@@ -352,7 +380,7 @@ const HomePage = () => {
                 </div>
               </div>
               {/* {All user} */}
-              <div className="bg-[#131313] px-3 max-h-[calc(100vh-200px)] overflow-y-auto ">
+              <div className="bg-[#131313] px-3 max-h-[calc(100vh-155 px)] sm:max-h-[calc(100vh-195px)] overflow-y-auto">
                 {querys &&
                   auth.searchUser?.map((item) => (
                     <div
@@ -378,34 +406,62 @@ const HomePage = () => {
                       onClick={() => handleCurrentChat(item)}
                       className="mb-1"
                     >
-                      {item &&
-                        (item.group ? (
-                          <ChatCard
-                            name={item.chat_name}
-                            userImg={item.chat_image || "dummyq.png"}
-                            onCardClick={handleCardClick}
-                            active={chat.chat_name === activeCard}
-                          />
-                        ) : (
-                          <ChatCard
-                            isChat={true}
-                            name={
-                              auth.reqUser?.id !== item.users[0]?.id
-                                ? item.users[0].full_name
-                                : item.users[1].full_name
-                            }
-                            userImg={
-                              auth.reqUser.id !== item.users[0].id
-                                ? item.users[0].profile_picture || "dummyq.png"
-                                : item.users[1].profile_picture || "dummyq.png"
-                            }
-                            onCardClick={handleCardClick}
-                            active={
-                              item.users[0].full_name === activeCard ||
-                              item.users[1].full_name === activeCard
-                            }
-                          />
-                        ))}
+                      {loading ? (
+                        <ChatCardSkeleton />
+                      ) : (
+                        <>
+                          {item &&
+                            (item.group ? (
+                              <ChatCard
+                                name={item.chat_name}
+                                userImg={item.chat_image || "dummyq.png"}
+                                onCardClick={handleCardClick}
+                                active={chat.chat_name === activeCard}
+                              />
+                            ) : (
+                              <ChatCard
+                                isChat={true}
+                                name={
+                                  auth.reqUser?.id !== item.users[0]?.id
+                                    ? item.users[0].full_name
+                                    : item.users[1].full_name
+                                }
+                                userImg={
+                                  auth.reqUser.id !== item.users[0].id
+                                    ? item.users[0].profile_picture ||
+                                      "dummyq.png"
+                                    : item.users[1].profile_picture ||
+                                      "dummyq.png"
+                                }
+                                onCardClick={handleCardClick}
+                                active={
+                                  item.users[0].full_name === activeCard ||
+                                  item.users[1].full_name === activeCard
+                                }
+                                // notification={notifications.length}
+                                // isNotification={
+                                //   notification[0]?.chat?.id === item.id
+                                // }
+
+                                // lastMessage={
+                                //   (item.id===
+                                //     messages[messages.length-1]?.chat?.id &&
+                                //     messages[messages.length-1]?.content)
+                                //     // (item.id===notifications[0]?.chat?.id&&
+                                //     //   notification[0]?.content)
+
+                                // }
+
+                                lastMessage={lastMessages[item.id]}
+                                timeStamp={
+                                  item.id ===
+                                    messages[messages.length - 1]?.chat?.id &&
+                                  messages[messages.length - 1]?.timeStamp
+                                }
+                              />
+                            ))}
+                        </>
+                      )}
                     </div>
                   ))}
               </div>
@@ -429,7 +485,7 @@ const HomePage = () => {
         {currentChat && (
           <div
             className={`relative ${
-              isMobile ? "w-full h-full" : "w-[70%]"
+              isMobile ? "w-full max-h-[calc(100vh-200px)] " : "w-[70%]"
             } bg-black rounded-lg`}
           >
             {/* header */}
@@ -585,7 +641,7 @@ const HomePage = () => {
             fontSize: "1.2rem",
             backgroundColor: "#1fadc3",
             color: "black",
-            border: "1px solid black  ",
+            borderRadius: "10px",
           }}
         >
           {snackbarMessage}

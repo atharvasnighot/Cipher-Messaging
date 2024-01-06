@@ -107,6 +107,7 @@ export const searchUser = (data) => async (dispatch) => {
     console.log("catch error ", error);
   }
 };
+
 export const updateUser = (data) => async (dispatch) => {
   try {
     const res = await fetch(`${BASE_API_URL}/api/users/update/${data.id}`, {
@@ -115,15 +116,22 @@ export const updateUser = (data) => async (dispatch) => {
         "Content-Type": "application/json",
         Authorization: `Bearer ${data.token}`,
       },
-      body:JSON.stringify(data.data)
+      body: JSON.stringify(data.data),
     });
-    const resData = await res.json();
-    console.log("updateuser ", resData);
-    dispatch({ type: UPDATE_USER, payload: resData });
+
+    if (!res.ok) {
+      const errorData = await res.json();
+      console.error("Failed to update user:", errorData);
+    } else {
+      const resData = await res.json();
+      console.log("updateuser ", resData);
+      dispatch({ type: UPDATE_USER, payload: resData });
+    }
   } catch (error) {
-    console.log("catch error ", error);
+    console.error("An error occurred while updating user:", error);
   }
 };
+
 
 export const logoutAction = () => async (dispatch) => {
   localStorage.removeItem("token");
