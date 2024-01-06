@@ -5,7 +5,7 @@ import { AiOutlineClose, AiOutlineSearch } from "react-icons/ai";
 import { ImAttachment } from "react-icons/im";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import { Snackbar, Alert } from "@mui/material";
+import { Snackbar, Alert, CircularProgress } from "@mui/material";
 import Fade from "@mui/material/Fade";
 import {
   BsArrowLeft,
@@ -37,6 +37,7 @@ import ChatCardSkeleton from "../ChatCard/ChatCardSkeleton";
 
 const HomePage = () => {
   const [loading, setLoading] = useState(true);
+  const [msgloading, setMsgLoading] = useState(true);
   const [querys, setQuerys] = useState(null);
   const [currentChat, setCurrentChat] = useState(null);
   const [content, setContent] = useState("");
@@ -117,7 +118,7 @@ const HomePage = () => {
         await dispatch(getUsersChat({ token }));
         setLoading(false);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
         setLoading(false);
       }
     };
@@ -125,11 +126,22 @@ const HomePage = () => {
     fetchData();
   }, [chat.createdChat, chat.createdGroup, dispatch, token]);
 
+  //get all messages
   useEffect(() => {
-    if (currentChat?.id)
-      dispatch(getAllMessage({ chatId: currentChat.id, token }));
-  }, [currentChat, message.newMessage, dispatch, token]);
+    const fetchData = async () => {
+      if (currentChat?.id) {
+        setMsgLoading(true);
 
+        try {
+          await dispatch(getAllMessage({ chatId: currentChat.id, token }));
+        } finally {
+          setMsgLoading(false);
+        }
+      }
+    };
+
+    fetchData();
+  }, [currentChat, dispatch, token]);
   const handleCloseOpenProfile = () => {
     setProfile(false);
   };
@@ -551,23 +563,28 @@ const HomePage = () => {
             </div>
 
             {/* message section */}
-
-            <div className="px-6 mt-[75px] h-[74vh] overflow-y-auto rounded-lg relative ">
-              <div className="rounded-lg  relative z-10 h-full ">
-                <div className="space-y-1 flex flex-col justify-center py-2">
-                  {messages.length > 0 &&
-                    messages?.map((item, i) => (
-                      <MessageCard
-                        key={i}
-                        isReqUserMessage={item.user.id !== auth.reqUser.id}
-                        content={item.content}
-                        timeStamp={item.timeStamp}
-                        searchTerm={searchTerm}
-                      />
-                    ))}
-                  <div ref={messagesEndRef} />
+            <div className="px-6 mt-[75px] h-[74vh] overflow-y-auto rounded-lg relative">
+              {msgloading ? (
+                <div className="flex items-center justify-center h-full">
+                <CircularProgress style={{ color: 'white' }} size={40} />
                 </div>
-              </div>
+              ) : (
+                <div className="rounded-lg relative z-10 h-full">
+                  <div className="space-y-1 flex flex-col justify-center py-2">
+                    {messages.length > 0 &&
+                      messages?.map((item, i) => (
+                        <MessageCard
+                          key={i}
+                          isReqUserMessage={item.user.id !== auth.reqUser.id}
+                          content={item.content}
+                          timeStamp={item.timeStamp}
+                          searchTerm={searchTerm}
+                        />
+                      ))}
+                    <div ref={messagesEndRef} />
+                  </div>
+                </div>
+              )}
             </div>
 
             <Particles className="absolute inset-0 z-0" />
