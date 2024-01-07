@@ -34,6 +34,7 @@ import EmojiPicker from "emoji-picker-react";
 import { Theme } from "emoji-picker-react";
 import { EmojiStyle } from "emoji-picker-react";
 import ChatCardSkeleton from "../ChatCard/ChatCardSkeleton";
+import DefaultPage from "./DefaultPage";
 
 const HomePage = () => {
   const [loading, setLoading] = useState(true);
@@ -82,11 +83,14 @@ const HomePage = () => {
     }
   }, [showSearch]);
 
-  const handleClickOnChatCard = (userId) => {
-    // setCurrentChat(userId);
-    // console.log(userId, "  ", token);
-    dispatch(createChat({ token, data: { userId } }));
+  const handleClickOnChatCard = (item) => {
+    dispatch(createChat({ token, data: { userId: item.id } }));
+    // setCurrentChat(item);
     setQuerys("");
+  };
+
+  const handleCurrentChat = (item) => {
+    setCurrentChat(item);
   };
 
   const handleHome = () => {
@@ -249,10 +253,6 @@ const HomePage = () => {
     dispatch(searchUser({ keyword, token }));
   };
 
-  const handleCurrentChat = (item) => {
-    setCurrentChat(item);
-  };
-
   const [activeCard, setActiveCard] = useState(null);
   const handleCardClick = (clickedName) => {
     setActiveCard(null);
@@ -312,7 +312,7 @@ const HomePage = () => {
                     onClick={() => navigate("/status")}
                   />
                   <BiCommentDetail />
-                  <div>
+                  <div className="transform cursor-pointer transition duration-300 ease-in-out hover:bg-[#292a30] active:bg-[#292a30] rounded-lg">
                     <BsThreeDotsVertical
                       id="fade-button"
                       aria-controls={open ? "fade-menu" : undefined}
@@ -392,12 +392,12 @@ const HomePage = () => {
                 </div>
               </div>
               {/* {All user} */}
-              <div className="bg-[#131313] px-3 max-h-[calc(100vh-155 px)] sm:max-h-[calc(100vh-195px)] overflow-y-auto">
+              <div className="bg-[#131313] px-3 h-screen sm:max-h-[calc(100vh-195px)] overflow-y-auto">
                 {querys &&
                   auth.searchUser?.map((item) => (
                     <div
                       key={item.id}
-                      onClick={() => handleClickOnChatCard(item.id)}
+                      onClick={() => handleClickOnChatCard(item)}
                       className="mb-1"
                     >
                       <ChatCard
@@ -405,7 +405,6 @@ const HomePage = () => {
                         userImg={item.profile_picture || "dummyq.png"}
                         onCardClick={handleCardClick}
                         active={chat.full_name === activeCard}
-                        // timeStamp={}
                       />
                     </div>
                   ))}
@@ -483,13 +482,7 @@ const HomePage = () => {
         <div className="border-l-2 border-solid border-[#49494b] h-full"></div>
         {/* default whatsapp page */}
         {!currentChat && (
-          <div className="hidden md:flex max-w-max flex-col items-center justify-center h-full mx-20 text-white">
-            <div className=" max-w-[50%] text-center">
-              <img className="mx-auto " src="cipher.png" alt="" />
-              <h1 className="text-4xl text-gray-400 ">Cipher Messaging</h1>
-              <p className="my-9 text-xl">Send and recieve messages </p>
-            </div>
-          </div>
+         <DefaultPage/>
         )}
 
         {/* Message part */}
@@ -566,7 +559,7 @@ const HomePage = () => {
             <div className="px-6 mt-[75px] h-[74vh] overflow-y-auto rounded-lg relative">
               {msgloading ? (
                 <div className="flex items-center justify-center h-full">
-                <CircularProgress style={{ color: 'white' }} size={40} />
+                  <CircularProgress style={{ color: "white" }} size={40} />
                 </div>
               ) : (
                 <div className="rounded-lg relative z-10 h-full">
