@@ -1,5 +1,4 @@
 package com.cipher.backend.controller;
-
 import com.cipher.backend.config.TokenProvider;
 import com.cipher.backend.model.User;
 import com.cipher.backend.repository.UserRepository;
