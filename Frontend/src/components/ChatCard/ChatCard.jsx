@@ -1,5 +1,5 @@
 import  { useState } from "react";
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 
 const ChatCard = ({ userImg, name, timeStamp, onCardClick, active,lastMessage }) => {
   const [isHovered, setIsHovered] = useState(false);
@@ -56,13 +56,13 @@ const ChatCard = ({ userImg, name, timeStamp, onCardClick, active,lastMessage })
   );
 };
 
-ChatCard.propTypes = {
-  userImg: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  timeStamp: PropTypes.string,
-  onCardClick: PropTypes.func.isRequired,
-  active: PropTypes.bool.isRequired,
-  lastMessage: PropTypes.string,
-};
+// ChatCard.propTypes = {
+//   userImg: PropTypes.string.isRequired,
+//   name: PropTypes.string.isRequired,
+//   timeStamp: PropTypes.bool,
+//   onCardClick: PropTypes.func.isRequired,
+//   active: PropTypes.bool.isRequired,
+//   lastMessage: PropTypes.bool,
+// };
 
 export default ChatCard;
