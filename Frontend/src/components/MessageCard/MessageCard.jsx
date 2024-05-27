@@ -26,7 +26,7 @@ const MessageCard = ({ isReqUserMessage, content, timeStamp, searchTerm }) => {
 MessageCard.propTypes = {
   isReqUserMessage: PropTypes.bool.isRequired,
   content: PropTypes.string.isRequired,
-  timeStamp: PropTypes.number.isRequired,
+  timeStamp: PropTypes.string.isRequired,
   searchTerm: PropTypes.string,
 };
 

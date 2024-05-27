@@ -57,7 +57,6 @@ const Signin = () => {
         setNetworkError(true);
       }
     } finally {
-      // Move setOpenSnackbar(false) outside the try-catch block
       setOpenSnackbar(false);
     }
   };
