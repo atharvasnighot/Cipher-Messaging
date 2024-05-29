@@ -9,10 +9,13 @@ import com.cipher.backend.request.SendMessageRequest;
 import com.cipher.backend.response.ApiResponse;
 import com.cipher.backend.service.MessageService;
 import com.cipher.backend.service.UserService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +23,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/messages")
 @Slf4j
+@Validated
 public class MessageController {
 
     @Autowired
@@ -29,7 +33,7 @@ public class MessageController {
     private UserService userService;
 
     @PostMapping("/create")
-    public ResponseEntity<Message> sendMessageHandler(@RequestBody SendMessageRequest request, @RequestHeader("Authorization") String jwt) throws UserException, ChatException {
+    public ResponseEntity<Message> sendMessageHandler(@Valid @RequestBody SendMessageRequest request, @RequestHeader("Authorization") String jwt) throws UserException, ChatException {
         log.info("Send message request received");
 
         User user = userService.findUserProfile(jwt);
@@ -42,7 +46,7 @@ public class MessageController {
     }
 
     @GetMapping("/chat/{chatId}")
-    public ResponseEntity<List<Message>> getChatMessagesHandler(@PathVariable Integer chatId, @RequestHeader("Authorization") String jwt) throws UserException, ChatException {
+    public ResponseEntity<List<Message>> getChatMessagesHandler(@PathVariable @NotNull Integer chatId, @RequestHeader("Authorization") String jwt) throws UserException, ChatException {
         log.info("Get messages request for chat ID: {}", chatId);
 
         User user = userService.findUserProfile(jwt);
@@ -54,7 +58,7 @@ public class MessageController {
     }
 
     @DeleteMapping("/{messageId}")
-    public ResponseEntity<ApiResponse> deleteMessagesHandler(@PathVariable Integer messageId, @RequestHeader("Authorization") String jwt) throws UserException, MessageException {
+    public ResponseEntity<ApiResponse> deleteMessagesHandler(@PathVariable @NotNull Integer messageId, @RequestHeader("Authorization") String jwt) throws UserException, MessageException, UserException {
         log.info("Delete message request for message ID: {}", messageId);
 
         User user = userService.findUserProfile(jwt);
@@ -66,4 +70,3 @@ public class MessageController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
-

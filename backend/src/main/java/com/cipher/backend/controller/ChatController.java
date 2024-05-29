@@ -7,12 +7,15 @@ import com.cipher.backend.model.User;
 import com.cipher.backend.request.SingleChatRequest;
 import com.cipher.backend.response.ApiResponse;
 import com.cipher.backend.service.ChatService;
-import com.cipher.backend.service.GroupChatRequest;
+import com.cipher.backend.request.GroupChatRequest;
 import com.cipher.backend.service.UserService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +23,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/chats")
 @Slf4j
+@Validated
 public class ChatController {
 
     @Autowired
@@ -29,7 +33,7 @@ public class ChatController {
     private UserService userService;
 
     @PostMapping("/single")
-    public ResponseEntity<Chat> createChatHandler(@RequestBody SingleChatRequest singleChatRequest, @RequestHeader("Authorization") String jwt) throws UserException {
+    public ResponseEntity<Chat> createChatHandler(@Valid @RequestBody SingleChatRequest singleChatRequest, @RequestHeader("Authorization") String jwt) throws UserException {
         log.info("Creating single chat with user ID: {}", singleChatRequest.getUserId());
         User requestUser = userService.findUserProfile(jwt);
         Chat chat = chatService.createChat(requestUser, singleChatRequest.getUserId());
@@ -38,7 +42,7 @@ public class ChatController {
     }
 
     @PostMapping("/group")
-    public ResponseEntity<Chat> createGroupHandler(@RequestBody GroupChatRequest groupChatRequest, @RequestHeader("Authorization") String jwt) throws UserException {
+    public ResponseEntity<Chat> createGroupHandler(@Valid @RequestBody GroupChatRequest groupChatRequest, @RequestHeader("Authorization") String jwt) throws UserException {
         log.info("Creating group chat with group name: {}", groupChatRequest.getChat_name());
         User requestUser = userService.findUserProfile(jwt);
         Chat chat = chatService.createGroup(groupChatRequest, requestUser);
@@ -47,7 +51,7 @@ public class ChatController {
     }
 
     @GetMapping("/{chatId}")
-    public ResponseEntity<Chat> findChatByIdHandler(@PathVariable Integer chatId, @RequestHeader("Authorization") String jwt) throws ChatException {
+    public ResponseEntity<Chat> findChatByIdHandler(@PathVariable @NotNull Integer chatId, @RequestHeader("Authorization") String jwt) throws ChatException {
         log.info("Finding chat with chat ID: {}", chatId);
         Chat chat = chatService.findChatById(chatId);
         log.info("Chat found with chat ID: {}", chat.getId());
@@ -64,7 +68,7 @@ public class ChatController {
     }
 
     @PutMapping("/{chatId}/add/{userId}")
-    public ResponseEntity<Chat> addUserToGroupHandler(@PathVariable Integer chatId, @PathVariable Integer userId, @RequestHeader("Authorization") String jwt) throws UserException, ChatException, UserException {
+    public ResponseEntity<Chat> addUserToGroupHandler(@PathVariable @NotNull Integer chatId, @PathVariable @NotNull Integer userId, @RequestHeader("Authorization") String jwt) throws UserException, ChatException, UserException {
         log.info("Adding user ID: {} to chat ID: {}", userId, chatId);
         User requestUser = userService.findUserProfile(jwt);
         Chat chat = chatService.addUserToGroup(userId, chatId, requestUser);
@@ -73,7 +77,7 @@ public class ChatController {
     }
 
     @PutMapping("/{chatId}/remove/{userId}")
-    public ResponseEntity<Chat> removeUserFromGroupHandler(@PathVariable Integer chatId, @PathVariable Integer userId, @RequestHeader("Authorization") String jwt) throws UserException, ChatException {
+    public ResponseEntity<Chat> removeUserFromGroupHandler(@PathVariable @NotNull Integer chatId, @PathVariable @NotNull Integer userId, @RequestHeader("Authorization") String jwt) throws UserException, ChatException {
         log.info("Removing user ID: {} from chat ID: {}", userId, chatId);
         User requestUser = userService.findUserProfile(jwt);
         Chat chat = chatService.removeFromGroup(userId, chatId, requestUser);
@@ -82,7 +86,7 @@ public class ChatController {
     }
 
     @DeleteMapping("/delete/{chatId}")
-    public ResponseEntity<ApiResponse> deleteChatHandler(@PathVariable Integer chatId, @RequestHeader("Authorization") String jwt) throws UserException, ChatException {
+    public ResponseEntity<ApiResponse> deleteChatHandler(@PathVariable @NotNull Integer chatId, @RequestHeader("Authorization") String jwt) throws UserException, ChatException {
         log.info("Deleting chat with chat ID: {}", chatId);
         User requestUser = userService.findUserProfile(jwt);
         chatService.deleteChat(chatId, requestUser.getId());
@@ -91,3 +95,4 @@ public class ChatController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
+

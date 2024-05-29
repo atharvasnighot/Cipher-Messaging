@@ -4,6 +4,7 @@ import com.cipher.backend.exception.UserException;
 import com.cipher.backend.model.Chat;
 import com.cipher.backend.model.User;
 import com.cipher.backend.repository.ChatRepository;
+import com.cipher.backend.request.GroupChatRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +32,7 @@ public class ChatServiceImplementation implements ChatService{
         chat.setCreatedBy(requestUser);
         chat.getUsers().add(user);
         chat.getUsers().add(requestUser);
-        chat.setGroup(false);
+        chat.setIsGroup(false);
         chatRepository.save(chat);
 
         return chat;
@@ -59,7 +60,7 @@ public class ChatServiceImplementation implements ChatService{
     public Chat createGroup(GroupChatRequest request, User requestUser) throws UserException {
 
         Chat group = new Chat();
-        group.setGroup(true);
+        group.setIsGroup(true);
         group.setChat_image(request.getChat_image());
         group.setChat_name(request.getChat_name());
         group.setCreatedBy(requestUser);

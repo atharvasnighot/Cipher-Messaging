@@ -4,6 +4,7 @@ import com.cipher.backend.exception.ChatException;
 import com.cipher.backend.exception.UserException;
 import com.cipher.backend.model.Chat;
 import com.cipher.backend.model.User;
+import com.cipher.backend.request.GroupChatRequest;
 
 import java.util.List;
 

@@ -1,5 +1,7 @@
-package com.cipher.backend.service;
+package com.cipher.backend.request;
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,8 +15,11 @@ import java.util.List;
 @AllArgsConstructor
 public class GroupChatRequest {
 
+    @NotEmpty(message = "User IDs list cannot be empty")
     private List<Integer> userIds;
-    private String chat_name;
-    private String chat_image;
 
+    @NotNull(message = "Chat name cannot be null")
+    private String chat_name;
+
+    private String chat_image;
 }
