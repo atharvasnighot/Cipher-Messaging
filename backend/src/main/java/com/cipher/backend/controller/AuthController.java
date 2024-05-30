@@ -76,7 +76,7 @@ public class AuthController {
         String email = request.getEmail();
         String password = request.getPassword();
 
-        log.info("Signin request received for email: {}", email);
+        log.info("Sign in request received for email: {}", email);
 
         Authentication authentication = authenticate(email, password);
         SecurityContextHolder.getContext().setAuthentication(authentication);
