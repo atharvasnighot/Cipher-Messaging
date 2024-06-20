@@ -32,8 +32,4 @@ Cipher Messaging is a web application that provides a messaging platform similar
    git clone https://github.com/atharvasnighot/Cipher-Messaging.git
    ```
 
-![image](https://github.com/atharvasnighot/Cipher-Messaging/assets/96972212/2d50a65f-f93a-445c-a2e1-fe9dfbe0760a)
-
-Dark Mode 
-
 ![image](https://github.com/atharvasnighot/Cipher-Messaging/assets/96972212/5e9a542e-e560-46d4-947b-ee3a1d0e3eef)
